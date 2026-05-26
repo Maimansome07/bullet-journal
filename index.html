@@ -715,6 +715,9 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
 .trend-section h3 { margin:0 0 16px; color:var(--primary); font-size:1.05rem; }
 .trend-wrap { overflow-x:auto; }
 
+.google-signin-btn { background:var(--primary) !important; color:#fff !important; font-weight:600; border:none !important; border-radius:20px !important; padding:5px 14px !important; font-size:0.82rem; cursor:pointer; transition:opacity 0.2s; }
+.google-signin-btn:hover { opacity:0.85; }
+.user-info-chip { display:flex; align-items:center; gap:6px; background:rgba(83,102,241,0.08); border-radius:20px; padding:3px 10px 3px 6px; border:1px solid rgba(83,102,241,0.2); }
 /* ── Markdown in journal ────────────────────────────── */
 .journal-md strong { font-weight:700; }
 .journal-md em { font-style:italic; }
@@ -743,6 +746,12 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
   <header>
     <div class="header-controls">
       <span id="syncStatus">☁️ —</span>
+      <button class="header-btn google-signin-btn" id="signInBtn" onclick="signInWithGoogle()" title="Sign in to sync across devices">🔑 Sign in</button>
+      <div class="user-info-chip" id="userInfo" style="display:none;">
+        <img id="userAvatar" src="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;display:none;" alt="">
+        <span id="userName" style="font-size:0.82rem;font-weight:600;color:var(--primary);"></span>
+        <button class="header-btn" onclick="signOutUser()" title="Sign out" style="padding:2px 8px;font-size:0.75rem;">Sign out</button>
+      </div>
       <button class="header-btn" onclick="openReflectionModal()" title="Review Week">📋 Review</button>
       <button class="header-btn" onclick="openSearch()" title="Search">🔍 Search</button>
       <button class="header-btn" id="darkModeBtn" onclick="toggleDarkMode()" title="Dark mode">🌙</button>
@@ -2737,8 +2746,8 @@ if('serviceWorker' in navigator){
 import { initializeApp }                          from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc,
          onSnapshot }                             from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-import { getAuth, signInAnonymously,
-         onAuthStateChanged }                     from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup,
+         onAuthStateChanged, signOut }            from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyDESPUNudT24leKO3vuxgGdWKdLOWN9Ix0",
@@ -2787,10 +2796,41 @@ window.fbSave = async function(data) {
 };
 
 setSyncStatus("loading");
-signInAnonymously(auth).catch(e => { console.error("Auth:", e); setSyncStatus("offline"); });
+const googleProvider = new GoogleAuthProvider();
+
+window.signInWithGoogle = function() {
+    signInWithPopup(auth, googleProvider).catch(e => {
+        console.error("Sign in failed:", e);
+        setSyncStatus("offline");
+    });
+};
+
+window.signOutUser = function() {
+    if(confirm("Sign out? Your data stays saved in the cloud.")) {
+        signOut(auth).then(() => {
+            document.getElementById("userInfo").style.display = "none";
+            document.getElementById("signInBtn").style.display = "";
+            setSyncStatus("offline");
+        });
+    }
+};
 
 onAuthStateChanged(auth, async (user) => {
-    if (!user) return;
+    if (!user) {
+        document.getElementById("userInfo").style.display = "none";
+        document.getElementById("signInBtn").style.display = "";
+        return;
+    }
+    // Show user info, hide sign-in button
+    var nameEl = document.getElementById("userName");
+    var avatarEl = document.getElementById("userAvatar");
+    var signInBtn = document.getElementById("signInBtn");
+    var userInfo = document.getElementById("userInfo");
+    if(nameEl) nameEl.textContent = user.displayName ? user.displayName.split(" ")[0] : "You";
+    if(avatarEl) avatarEl.src = user.photoURL || "";
+    if(avatarEl) avatarEl.style.display = user.photoURL ? "" : "none";
+    if(signInBtn) signInBtn.style.display = "none";
+    if(userInfo) userInfo.style.display = "";
     setSyncStatus("loading");
 
     // Pull latest cloud data on startup
