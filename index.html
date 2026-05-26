@@ -1428,7 +1428,7 @@ window.applyFirebaseData = applyFirebaseData;
 
 // EXPORT / IMPORT
 function exportData(){
-    var data = {tasks,checklistItems,habits,habitLogs,futureLog,moodLog,journal,countdowns,recurringTasks,exportedAt:new Date().toISOString()};
+    var data = {tasks,checklistItems,habits,habitLogs,futureLog,moodLog,journal,countdowns,recurringTasks,sleepLog,waterLog,exportedAt:new Date().toISOString()};
     var blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -1446,6 +1446,8 @@ function importData(e){
             if(d.futureLog) futureLog=d.futureLog; if(d.moodLog) moodLog=d.moodLog;
             if(d.journal) journal=d.journal; if(d.countdowns) countdowns=d.countdowns;
             if(d.recurringTasks) recurringTasks=d.recurringTasks;
+            if(d.sleepLog) sleepLog=d.sleepLog;
+            if(d.waterLog) waterLog=d.waterLog;
             saveData(); renderCalendar(); renderDashboard();
             if(isTabActive('checklist'))  renderChecklist();
             if(isTabActive('habits'))     renderHabitGrid();
@@ -3231,10 +3233,8 @@ function addTouchDrag(el, dateKey, idx){
         var inp=document.getElementById('subtaskInput'); if(inp) inp.value='';
         if(_origEdit) _origEdit(dateKey,idx,task);
     };
-    var _origSave = window.saveTask;
     window.saveTask = function(e){
-        // We intercept by monkey-patching after the fact;
-        // easier to just re-define saveTask fully with subtasks support below.
+        // saveTask fully re-defined here to include subtasks support.
         e.preventDefault(); if(!window.currentDay) return;
         var title=document.getElementById("taskTitle").value.trim(); if(!title) return;
         var stEl=document.getElementById("taskStartTime"), etEl=document.getElementById("taskEndTime");
