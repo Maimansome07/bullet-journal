@@ -2,7 +2,7 @@
   "name": "Mai Bullet Journal",
   "short_name": "BulletJournal",
   "description": "Personal bullet journal with habits, tasks, and mood tracking",
-  "start_url": "./bullet-journal-complete.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f8f9fa",
   "theme_color": "#5366f1",
