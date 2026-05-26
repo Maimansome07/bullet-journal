@@ -795,6 +795,61 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
 
 .drag-over-touch { outline: 2px dashed var(--primary); background: rgba(83,102,241,0.07)!important; }
 
+/* ══ FINANCE TRACKER ══ */
+.finance-container { max-width: 860px; margin: 0 auto; padding: 10px 0; display: flex; flex-direction: column; gap: 14px; }
+.finance-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.finance-card { background: var(--bg-white); border-radius: var(--radius); padding: 16px 20px; box-shadow: var(--shadow); text-align: center; border-top: 4px solid var(--primary); }
+.finance-card.income-card { border-color: #00b894; }
+.finance-card.expense-card { border-color: #ff6b6b; }
+.finance-card.balance-card { border-color: var(--primary); }
+.finance-card-label { font-size: 0.78rem; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
+.finance-card-amount { font-size: 1.6rem; font-weight: 700; color: var(--text-dark); }
+.finance-card-amount.positive { color: #00b894; }
+.finance-card-amount.negative { color: #ff6b6b; }
+.finance-form-card { background: var(--bg-white); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+.finance-form-title { font-size: 0.9rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+.finance-form-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.finance-input { padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Fredoka', sans-serif; font-size: 0.88rem; background: var(--bg-white); color: var(--text-dark); flex: 1; min-width: 100px; }
+.finance-input:focus { outline: none; border-color: var(--primary); }
+.finance-add-btn { padding: 8px 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-family: 'Fredoka', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.finance-add-btn:hover { opacity: 0.88; }
+.finance-section-header { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); padding: 10px 14px; background: var(--bg-white); border-radius: 10px; cursor: pointer; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; user-select: none; }
+.finance-section-header:hover { color: var(--primary); }
+.finance-toggle-icon { font-size: 1rem; color: var(--text-muted); }
+.finance-budget-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; padding: 10px 0; }
+.finance-budget-item { background: var(--bg-white); border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow); }
+.finance-budget-label { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.finance-budget-bar-bg { height: 7px; background: var(--bg-light); border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
+.finance-budget-bar-fill { height: 100%; border-radius: 99px; background: var(--primary); transition: width 0.4s; }
+.finance-budget-bar-fill.over-budget { background: #ff6b6b; }
+.finance-budget-sub { font-size: 0.72rem; color: var(--text-muted); }
+.finance-budget-edit { background: none; border: none; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; padding: 0; box-shadow: none; transform: none; }
+.finance-budget-edit:hover { color: var(--primary); }
+.finance-breakdown { padding: 8px 0; display: flex; flex-direction: column; gap: 8px; }
+.finance-breakdown-row { display: flex; align-items: center; gap: 10px; }
+.finance-breakdown-cat { font-size: 0.82rem; font-weight: 600; color: var(--text-dark); width: 110px; flex-shrink: 0; }
+.finance-breakdown-bar-bg { flex: 1; height: 10px; background: var(--bg-light); border-radius: 99px; overflow: hidden; }
+.finance-breakdown-bar-fill { height: 100%; border-radius: 99px; transition: width 0.4s; }
+.finance-breakdown-val { font-size: 0.8rem; color: var(--text-muted); width: 70px; text-align: right; flex-shrink: 0; }
+.finance-chart-wrap { padding: 8px 0; overflow-x: auto; }
+.finance-filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; padding: 10px 0 2px; }
+.finance-list { display: flex; flex-direction: column; gap: 6px; }
+.finance-entry { background: var(--bg-white); border-radius: 10px; padding: 10px 14px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; }
+.finance-entry-icon { font-size: 1.2rem; flex-shrink: 0; }
+.finance-entry-info { flex: 1; }
+.finance-entry-title { font-size: 0.88rem; font-weight: 600; color: var(--text-dark); }
+.finance-entry-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
+.finance-entry-amount { font-size: 1rem; font-weight: 700; flex-shrink: 0; }
+.finance-entry-amount.income { color: #00b894; }
+.finance-entry-amount.expense { color: #ff6b6b; }
+.finance-entry-del { background: none; border: none; color: #ccc; font-size: 1rem; cursor: pointer; padding: 0; box-shadow: none; transform: none; flex-shrink: 0; }
+.finance-entry-del:hover { color: #ff6b6b; }
+.finance-empty { text-align: center; padding: 24px; color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
+@media (max-width: 600px) {
+  .finance-summary { grid-template-columns: 1fr; }
+  .finance-card-amount { font-size: 1.3rem; }
+}
+
 </style>
 </head>
 <body>
@@ -931,6 +986,7 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
     <button class="tab-btn" onclick="switchTab('futurelog',this)">🔭 Future Log</button>
     <button class="tab-btn" onclick="switchTab('collections',this)">🏷️ Collections</button>
     <button class="tab-btn" onclick="switchTab('key',this)">🔑 Key</button>
+    <button class="tab-btn" onclick="switchTab('finance',this)">💰 Finance</button>
   </div>
 
   <!-- ══ CALENDAR ══ -->
@@ -1105,6 +1161,74 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
       <input class="collections-search" id="collectionsSearch" type="text"
         placeholder="Filter by tag name…" oninput="renderCollections()">
       <div id="collectionsGrid"></div>
+    </div>
+  </div>
+
+
+  <!-- ══ FINANCE ══ -->
+  <div id="finance" class="page">
+    <div class="finance-container">
+
+      <!-- Summary Cards -->
+      <div class="finance-summary" id="financeSummary"></div>
+
+      <!-- Add Transaction Form -->
+      <div class="finance-form-card">
+        <div class="finance-form-title">➕ Log Transaction</div>
+        <div class="finance-form-row">
+          <select id="finType" class="finance-input" onchange="updateFinCategories()">
+            <option value="expense">💸 Expense</option>
+            <option value="income">💵 Income</option>
+          </select>
+          <input type="number" id="finAmount" class="finance-input" placeholder="Amount" min="0" step="0.01">
+          <input type="date" id="finDate" class="finance-input">
+        </div>
+        <div class="finance-form-row">
+          <select id="finCategory" class="finance-input"></select>
+          <input type="text" id="finNote" class="finance-input" placeholder="Note (optional)" style="flex:2;">
+          <button class="finance-add-btn" onclick="addFinanceEntry()">Add</button>
+        </div>
+      </div>
+
+      <!-- Budget limits -->
+      <div class="finance-section-header" onclick="toggleFinanceSection('budgetSection')">
+        🎯 Monthly Budgets <span class="finance-toggle-icon" id="budgetToggle">▾</span>
+      </div>
+      <div id="budgetSection">
+        <div class="finance-budget-grid" id="financeBudgetGrid"></div>
+      </div>
+
+      <!-- Category Breakdown -->
+      <div class="finance-section-header" onclick="toggleFinanceSection('breakdownSection')">
+        📊 This Month's Breakdown <span class="finance-toggle-icon" id="breakdownToggle">▾</span>
+      </div>
+      <div id="breakdownSection">
+        <div class="finance-breakdown" id="financeBreakdown"></div>
+      </div>
+
+      <!-- 6-month chart -->
+      <div class="finance-section-header" onclick="toggleFinanceSection('chartSection')">
+        📈 6-Month Overview <span class="finance-toggle-icon" id="chartToggle">▾</span>
+      </div>
+      <div id="chartSection">
+        <div class="finance-chart-wrap" id="financeChartWrap"></div>
+      </div>
+
+      <!-- Transaction History -->
+      <div class="finance-section-header" onclick="toggleFinanceSection('historySection')">
+        🧾 Transactions <span class="finance-toggle-icon" id="historyToggle">▾</span>
+      </div>
+      <div id="historySection">
+        <div class="finance-filter-row">
+          <select id="finFilterMonth" class="finance-input" onchange="renderFinance()" style="max-width:160px;"></select>
+          <select id="finFilterCat" class="finance-input" onchange="renderFinance()" style="max-width:160px;">
+            <option value="">All Categories</option>
+          </select>
+          <input type="text" id="finSearch" class="finance-input" placeholder="🔍 Search…" oninput="renderFinance()" style="flex:1;">
+        </div>
+        <div class="finance-list" id="financeList"></div>
+      </div>
+
     </div>
   </div>
 
@@ -1318,6 +1442,7 @@ var moodLog = {}, journal = {}, countdowns = [], recurringTasks = [];
 var weekIntentions = {}, reflections = {};
 var currentDay = null, currentTaskId = null, editingTaskId = null;
 var sleepLog = {}, waterLog = {};
+var financeLog = [], financeBudgets = {};
 var activeFilter = '', habitCurrentDate = new Date();
 var journalCurrentDate = new Date(), statsCurrentDate = new Date();
 var pendingFutureEntry = null, moodModalDay = null, journalModalDay = null;
@@ -1347,8 +1472,10 @@ function loadData(){
         recurringTasks  = JSON.parse(ls("bj_recurring")   ||"[]");
         weekIntentions  = JSON.parse(ls("bj_sprint")     ||"{}");
         reflections     = JSON.parse(ls("bj_reflections")||"{}");
-        sleepLog       = JSON.parse(ls("bj_sleepLog")  ||"{}");
-        waterLog       = JSON.parse(ls("bj_waterLog")  ||"{}");
+        sleepLog       = JSON.parse(ls("bj_sleepLog")    ||"{}");
+        waterLog       = JSON.parse(ls("bj_waterLog")    ||"{}");
+        financeLog     = JSON.parse(ls("bj_financeLog")  ||"[]");
+        financeBudgets = JSON.parse(ls("bj_finBudgets")  ||"{}");
         darkMode       = ls("bj_darkMode") === "true";
         dashOpen       = ls("bj_dashOpen") !== "false";
     } catch(e) {
@@ -1370,6 +1497,8 @@ function saveData(){
     localStorage.setItem("bj_reflections",JSON.stringify(reflections));
     localStorage.setItem("bj_sleepLog",   JSON.stringify(sleepLog));
     localStorage.setItem("bj_waterLog",   JSON.stringify(waterLog));
+    localStorage.setItem("bj_financeLog", JSON.stringify(financeLog));
+    localStorage.setItem("bj_finBudgets", JSON.stringify(financeBudgets));
     // Debounced Firebase save (1.5s after last change)
     if(_fbSaveTimer) clearTimeout(_fbSaveTimer);
     _fbSaveTimer = setTimeout(function(){
@@ -1379,7 +1508,8 @@ function saveData(){
                 futureLog:futureLog, moodLog:moodLog, journal:journal,
                 countdowns:countdowns, recurringTasks:recurringTasks,
                 weekIntentions:weekIntentions, reflections:reflections,
-                sleepLog:sleepLog, waterLog:waterLog
+                sleepLog:sleepLog, waterLog:waterLog,
+                financeLog:financeLog, financeBudgets:financeBudgets
             });
         }
     }, 1500);
@@ -1399,6 +1529,8 @@ function applyFirebaseData(d){
     if(d.reflections)     reflections     = d.reflections     || {};
     if(d.sleepLog)        sleepLog        = d.sleepLog        || {};
     if(d.waterLog)        waterLog        = d.waterLog        || {};
+    if(d.financeLog)      financeLog      = d.financeLog      || [];
+    if(d.financeBudgets)  financeBudgets  = d.financeBudgets  || {};
     // Cache in localStorage
     localStorage.setItem("bj_tasks",     JSON.stringify(tasks));
     localStorage.setItem("bj_checklist", JSON.stringify(checklistItems));
@@ -1413,6 +1545,8 @@ function applyFirebaseData(d){
     localStorage.setItem("bj_reflections",JSON.stringify(reflections));
     localStorage.setItem("bj_sleepLog",   JSON.stringify(sleepLog));
     localStorage.setItem("bj_waterLog",   JSON.stringify(waterLog));
+    localStorage.setItem("bj_financeLog", JSON.stringify(financeLog));
+    localStorage.setItem("bj_finBudgets", JSON.stringify(financeBudgets));
     // Re-render only active/always-visible views
     if(isTabActive('calendar'))     renderCalendar();
     if(isTabActive('checklist'))    renderChecklist();
@@ -1422,13 +1556,14 @@ function applyFirebaseData(d){
     if(isTabActive('journal'))      renderJournalPage();
     if(isTabActive('collections'))  renderCollections();
     if(isTabActive('week'))         renderWeekView();
+    if(isTabActive('finance'))      renderFinance();
     renderDashboard(); renderOverdue(); pomRender(); renderSprint();
 }
 window.applyFirebaseData = applyFirebaseData;
 
 // EXPORT / IMPORT
 function exportData(){
-    var data = {tasks,checklistItems,habits,habitLogs,futureLog,moodLog,journal,countdowns,recurringTasks,sleepLog,waterLog,exportedAt:new Date().toISOString()};
+    var data = {tasks,checklistItems,habits,habitLogs,futureLog,moodLog,journal,countdowns,recurringTasks,sleepLog,waterLog,financeLog,financeBudgets,exportedAt:new Date().toISOString()};
     var blob = new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
     var a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -1448,6 +1583,8 @@ function importData(e){
             if(d.recurringTasks) recurringTasks=d.recurringTasks;
             if(d.sleepLog) sleepLog=d.sleepLog;
             if(d.waterLog) waterLog=d.waterLog;
+            if(d.financeLog) financeLog=d.financeLog;
+            if(d.financeBudgets) financeBudgets=d.financeBudgets;
             saveData(); renderCalendar(); renderDashboard();
             if(isTabActive('checklist'))  renderChecklist();
             if(isTabActive('habits'))     renderHabitGrid();
@@ -3269,6 +3406,7 @@ function addTouchDrag(el, dateKey, idx){
     window.switchTab = function(tab, btn){
         _origSwitch(tab, btn);
         if(tab==='week') renderWeekView();
+        if(tab==='finance') renderFinance();
     };
 })();
 
@@ -3281,6 +3419,234 @@ document.addEventListener('DOMContentLoaded', function(){
 
 </script>
 
+
+<script>
+
+// ═══════════════════════════════════════════════════
+//  FINANCE TRACKER
+// ═══════════════════════════════════════════════════
+var financeLog = [];   // [{id, type, amount, category, date, note}]
+var financeBudgets = {}; // {category: limit}
+
+var FIN_EXPENSE_CATS = ['🍔 Food','🚗 Transport','🏠 Housing','💡 Utilities','🛍️ Shopping','🎮 Entertainment','💊 Health','📚 Education','✈️ Travel','📦 Other'];
+var FIN_INCOME_CATS  = ['💼 Salary','💰 Freelance','🎁 Gift','📈 Investment','🏦 Other Income'];
+var CAT_COLORS = ['#5366f1','#00b894','#ff6b6b','#fdcb6e','#a29bfe','#fd79a8','#00cec9','#e17055','#74b9ff','#55efc4','#fab1a0','#636e72'];
+
+function updateFinCategories(){
+    var type = document.getElementById('finType').value;
+    var cats = type === 'income' ? FIN_INCOME_CATS : FIN_EXPENSE_CATS;
+    var sel = document.getElementById('finCategory');
+    sel.innerHTML = cats.map(function(c){ return '<option value="'+c+'">'+c+'</option>'; }).join('');
+}
+
+function addFinanceEntry(){
+    var type = document.getElementById('finType').value;
+    var amount = parseFloat(document.getElementById('finAmount').value);
+    var date = document.getElementById('finDate').value;
+    var category = document.getElementById('finCategory').value;
+    var note = document.getElementById('finNote').value.trim();
+    if(!amount || amount <= 0){ document.getElementById('finAmount').focus(); return; }
+    if(!date){ document.getElementById('finDate').value = getTodayKey(); date = getTodayKey(); }
+    financeLog.push({ id: Date.now(), type: type, amount: Math.round(amount*100)/100, category: category, date: date, note: note });
+    financeLog.sort(function(a,b){ return b.date.localeCompare(a.date); });
+    document.getElementById('finAmount').value = '';
+    document.getElementById('finNote').value = '';
+    saveData(); renderFinance();
+}
+
+function deleteFinanceEntry(id){
+    financeLog = financeLog.filter(function(e){ return e.id !== id; });
+    saveData(); renderFinance();
+}
+
+function setBudgetIdx(i){ setBudget(window["_finBudgetCat_"+i]); }
+function setBudget(cat){
+    var current = financeBudgets[cat] || '';
+    var val = prompt('Monthly budget for ' + cat + ' (leave blank to remove):', current);
+    if(val === null) return;
+    val = parseFloat(val);
+    if(!isNaN(val) && val > 0) financeBudgets[cat] = val;
+    else delete financeBudgets[cat];
+    saveData(); renderFinance();
+}
+
+function toggleFinanceSection(id){
+    var el = document.getElementById(id);
+    var icon = document.getElementById(id.replace('Section','Toggle'));
+    if(!el) return;
+    var hidden = el.style.display === 'none';
+    el.style.display = hidden ? '' : 'none';
+    if(icon) icon.textContent = hidden ? '▾' : '▸';
+}
+
+function getFinanceMonth(offset){
+    // offset 0 = current month, -1 = last month, etc.
+    var d = new Date();
+    d.setMonth(d.getMonth() + offset);
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
+
+function renderFinance(){
+    if(!isTabActive('finance')) return;
+    updateFinCategories();
+
+    // Populate month filter
+    var monthSel = document.getElementById('finFilterMonth');
+    var currentVal = monthSel.value;
+    var months = [];
+    for(var i=0; i<12; i++){
+        var d = new Date(); d.setMonth(d.getMonth()-i);
+        var val = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+        var label = d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+        months.push({val:val,label:label});
+    }
+    monthSel.innerHTML = months.map(function(m){
+        return '<option value="'+m.val+'"'+(m.val===currentVal?' selected':'')+'>'+m.label+'</option>';
+    }).join('');
+    if(!monthSel.value) monthSel.value = months[0].val;
+    var selMonth = monthSel.value;
+
+    // Filter entries for selected month
+    var monthEntries = financeLog.filter(function(e){ return e.date.startsWith(selMonth); });
+    var searchQ = (document.getElementById('finSearch').value||'').toLowerCase();
+    var catFilter = document.getElementById('finFilterCat').value;
+
+    // Summary
+    var totalIncome  = monthEntries.filter(function(e){return e.type==='income';}).reduce(function(s,e){return s+e.amount;},0);
+    var totalExpense = monthEntries.filter(function(e){return e.type==='expense';}).reduce(function(s,e){return s+e.amount;},0);
+    var balance = totalIncome - totalExpense;
+    var summaryEl = document.getElementById('financeSummary');
+    summaryEl.innerHTML =
+        '<div class="finance-card income-card"><div class="finance-card-label">Income</div><div class="finance-card-amount positive">+฿'+fmt(totalIncome)+'</div></div>'+
+        '<div class="finance-card expense-card"><div class="finance-card-label">Expenses</div><div class="finance-card-amount negative">-฿'+fmt(totalExpense)+'</div></div>'+
+        '<div class="finance-card balance-card"><div class="finance-card-label">Balance</div><div class="finance-card-amount '+(balance>=0?'positive':'negative')+'">'+(balance>=0?'+':'-')+'฿'+fmt(Math.abs(balance))+'</div></div>';
+
+    // Budget grid
+    var expCats = FIN_EXPENSE_CATS;
+    var budgetHtml = '';
+    expCats.forEach(function(cat, i){
+        var spent = monthEntries.filter(function(e){return e.type==='expense'&&e.category===cat;}).reduce(function(s,e){return s+e.amount;},0);
+        if(spent === 0 && !financeBudgets[cat]) return;
+        var limit = financeBudgets[cat] || 0;
+        var pct = limit > 0 ? Math.min(spent/limit*100, 100) : 0;
+        var over = limit > 0 && spent > limit;
+        window['_finBudgetCat_'+i] = cat;
+        budgetHtml += '<div class="finance-budget-item">'+
+            '<div class="finance-budget-label"><span>'+cat+'</span>'+
+            '<button class="finance-budget-edit" onclick="setBudgetIdx('+i+')" title="Set budget">✏️</button></div>'+
+            (limit > 0 ?
+                '<div class="finance-budget-bar-bg"><div class="finance-budget-bar-fill'+(over?' over-budget':'')+'" style="width:'+pct+'%"></div></div>'+
+                '<div class="finance-budget-sub">฿'+fmt(spent)+' / ฿'+fmt(limit)+(over?' ⚠️ Over budget!':'')+'</div>' :
+                '<div class="finance-budget-sub">฿'+fmt(spent)+' spent — <button class="finance-budget-edit" onclick="setBudgetIdx('+i+')">Set budget</button></div>'
+            )+
+        '</div>';
+    });
+    document.getElementById('financeBudgetGrid').innerHTML = budgetHtml ||
+        '<div class="finance-empty">No expenses this month. Add transactions to see budget tracking.</div>';
+
+    // Category breakdown
+    var catTotals = {};
+    monthEntries.filter(function(e){return e.type==='expense';}).forEach(function(e){
+        catTotals[e.category] = (catTotals[e.category]||0) + e.amount;
+    });
+    var catEntries = Object.keys(catTotals).sort(function(a,b){return catTotals[b]-catTotals[a];});
+    var maxCat = catEntries.length ? catTotals[catEntries[0]] : 1;
+    var breakdownHtml = '';
+    catEntries.forEach(function(cat, i){
+        var pct = Math.round(catTotals[cat]/maxCat*100);
+        var color = CAT_COLORS[i % CAT_COLORS.length];
+        breakdownHtml += '<div class="finance-breakdown-row">'+
+            '<div class="finance-breakdown-cat">'+cat+'</div>'+
+            '<div class="finance-breakdown-bar-bg"><div class="finance-breakdown-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'+
+            '<div class="finance-breakdown-val">฿'+fmt(catTotals[cat])+'</div>'+
+        '</div>';
+    });
+    document.getElementById('financeBreakdown').innerHTML = breakdownHtml ||
+        '<div class="finance-empty">No expenses logged this month.</div>';
+
+    // Update category filter dropdown
+    var catSel = document.getElementById('finFilterCat');
+    var allCats = Array.from(new Set(financeLog.map(function(e){return e.category;}))).sort();
+    catSel.innerHTML = '<option value="">All Categories</option>' +
+        allCats.map(function(c){ return '<option value="'+c+'"'+(c===catFilter?' selected':'')+'>'+c+'</option>'; }).join('');
+
+    // Transaction list (filtered)
+    var filtered = financeLog.filter(function(e){
+        var matchMonth = e.date.startsWith(selMonth);
+        var matchCat = !catFilter || e.category === catFilter;
+        var matchSearch = !searchQ || e.note.toLowerCase().includes(searchQ) || e.category.toLowerCase().includes(searchQ);
+        return matchMonth && matchCat && matchSearch;
+    });
+    var listHtml = '';
+    filtered.forEach(function(e){
+        var icon = e.type === 'income' ? '💵' : '💸';
+        listHtml += '<div class="finance-entry">'+
+            '<div class="finance-entry-icon">'+icon+'</div>'+
+            '<div class="finance-entry-info">'+
+                '<div class="finance-entry-title">'+(e.note ? escHtml(e.note) : e.category)+'</div>'+
+                '<div class="finance-entry-meta">'+e.category+' · '+formatFinDate(e.date)+'</div>'+
+            '</div>'+
+            '<div class="finance-entry-amount '+e.type+'">'+(e.type==='income'?'+':'-')+'฿'+fmt(e.amount)+'</div>'+
+            '<button class="finance-entry-del" onclick="deleteFinanceEntry('+e.id+')" title="Delete">✕</button>'+
+        '</div>';
+    });
+    document.getElementById('financeList').innerHTML = listHtml ||
+        '<div class="finance-empty">No transactions found.</div>';
+
+    // 6-month chart
+    renderFinanceChart();
+}
+
+function fmt(n){ return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function formatFinDate(dk){ return parseLocalDate(dk).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+function renderFinanceChart(){
+    var wrap = document.getElementById('financeChartWrap');
+    if(!wrap) return;
+    var months = [];
+    for(var i=5;i>=0;i--){
+        var d=new Date(); d.setMonth(d.getMonth()-i);
+        var ym=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+        var label=d.toLocaleDateString('en-US',{month:'short'});
+        var inc=financeLog.filter(function(e){return e.type==='income'&&e.date.startsWith(ym);}).reduce(function(s,e){return s+e.amount;},0);
+        var exp=financeLog.filter(function(e){return e.type==='expense'&&e.date.startsWith(ym);}).reduce(function(s,e){return s+e.amount;},0);
+        months.push({label:label,inc:inc,exp:exp});
+    }
+    var maxVal = Math.max.apply(null, months.map(function(m){return Math.max(m.inc,m.exp);})) || 1;
+    var W=560,H=160,padL=40,padR=10,padT=16,padB=28;
+    var chartW=W-padL-padR, barW=Math.floor(chartW/months.length*0.35);
+    var out='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="Fredoka,sans-serif">';
+    // Grid
+    [0,25,50,75,100].forEach(function(v){
+        var y=padT+(1-v/100)*(H-padT-padB);
+        out+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'" stroke="#e5e7eb" stroke-width="1"/>';
+    });
+    months.forEach(function(m,i){
+        var x=padL+i*(chartW/months.length)+chartW/months.length/2;
+        var incH=Math.round(m.inc/maxVal*(H-padT-padB));
+        var expH=Math.round(m.exp/maxVal*(H-padT-padB));
+        var incY=padT+(H-padT-padB)-incH;
+        var expY=padT+(H-padT-padB)-expH;
+        out+='<rect x="'+(x-barW-2)+'" y="'+incY+'" width="'+barW+'" height="'+incH+'" fill="#00b894" rx="3" opacity="0.85"/>';
+        out+='<rect x="'+(x+2)+'" y="'+expY+'" width="'+barW+'" height="'+expH+'" fill="#ff6b6b" rx="3" opacity="0.85"/>';
+        out+='<text x="'+x+'" y="'+(H-4)+'" text-anchor="middle" font-size="11" fill="#94a3b8">'+m.label+'</text>';
+    });
+    // Legend
+    out+='<rect x="'+padL+'" y="4" width="10" height="10" fill="#00b894" rx="2"/>';
+    out+='<text x="'+(padL+13)+'" y="13" font-size="11" fill="#00b894">Income</text>';
+    out+='<rect x="'+(padL+70)+'" y="4" width="10" height="10" fill="#ff6b6b" rx="2"/>';
+    out+='<text x="'+(padL+83)+'" y="13" font-size="11" fill="#ff6b6b">Expenses</text>';
+    out+='</svg>';
+    wrap.innerHTML=out;
+}
+
+// Init finance date input to today
+document.addEventListener('DOMContentLoaded', function(){
+    var d=document.getElementById('finDate'); if(d) d.value=getTodayKey();
+    updateFinCategories();
+});
+
+</script>
 
 <script>
 if('serviceWorker' in navigator){
