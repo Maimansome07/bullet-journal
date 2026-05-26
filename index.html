@@ -793,6 +793,8 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
 .journal-md-preview em { font-style:italic; }
 .journal-md-preview blockquote { border-left:3px solid var(--primary); margin:8px 0; padding:4px 12px; color:var(--text-muted); font-style:italic; background:var(--bg-light); border-radius:0 var(--radius) var(--radius) 0; }
 
+.drag-over-touch { outline: 2px dashed var(--primary); background: rgba(83,102,241,0.07)!important; }
+
 </style>
 </head>
 <body>
@@ -1315,6 +1317,7 @@ var tasks = {}, checklistItems = [], habits = [], habitLogs = {}, futureLog = []
 var moodLog = {}, journal = {}, countdowns = [], recurringTasks = [];
 var weekIntentions = {}, reflections = {};
 var currentDay = null, currentTaskId = null, editingTaskId = null;
+var sleepLog = {}, waterLog = {};
 var activeFilter = '', habitCurrentDate = new Date();
 var journalCurrentDate = new Date(), statsCurrentDate = new Date();
 var pendingFutureEntry = null, moodModalDay = null, journalModalDay = null;
@@ -1344,6 +1347,8 @@ function loadData(){
         recurringTasks  = JSON.parse(ls("bj_recurring")   ||"[]");
         weekIntentions  = JSON.parse(ls("bj_sprint")     ||"{}");
         reflections     = JSON.parse(ls("bj_reflections")||"{}");
+        sleepLog       = JSON.parse(ls("bj_sleepLog")  ||"{}");
+        waterLog       = JSON.parse(ls("bj_waterLog")  ||"{}");
         darkMode       = ls("bj_darkMode") === "true";
         dashOpen       = ls("bj_dashOpen") !== "false";
     } catch(e) {
@@ -1363,6 +1368,8 @@ function saveData(){
     localStorage.setItem("bj_recurring",   JSON.stringify(recurringTasks));
     localStorage.setItem("bj_sprint",     JSON.stringify(weekIntentions));
     localStorage.setItem("bj_reflections",JSON.stringify(reflections));
+    localStorage.setItem("bj_sleepLog",   JSON.stringify(sleepLog));
+    localStorage.setItem("bj_waterLog",   JSON.stringify(waterLog));
     // Debounced Firebase save (1.5s after last change)
     if(_fbSaveTimer) clearTimeout(_fbSaveTimer);
     _fbSaveTimer = setTimeout(function(){
@@ -1371,7 +1378,8 @@ function saveData(){
                 tasks:tasks, checklistItems:checklistItems, habits:habits, habitLogs:habitLogs,
                 futureLog:futureLog, moodLog:moodLog, journal:journal,
                 countdowns:countdowns, recurringTasks:recurringTasks,
-                weekIntentions:weekIntentions, reflections:reflections
+                weekIntentions:weekIntentions, reflections:reflections,
+                sleepLog:sleepLog, waterLog:waterLog
             });
         }
     }, 1500);
@@ -1389,6 +1397,8 @@ function applyFirebaseData(d){
     if(d.recurringTasks)  recurringTasks  = d.recurringTasks;
     if(d.weekIntentions)  weekIntentions  = d.weekIntentions  || {};
     if(d.reflections)     reflections     = d.reflections     || {};
+    if(d.sleepLog)        sleepLog        = d.sleepLog        || {};
+    if(d.waterLog)        waterLog        = d.waterLog        || {};
     // Cache in localStorage
     localStorage.setItem("bj_tasks",     JSON.stringify(tasks));
     localStorage.setItem("bj_checklist", JSON.stringify(checklistItems));
@@ -1401,14 +1411,18 @@ function applyFirebaseData(d){
     localStorage.setItem("bj_recurring",   JSON.stringify(recurringTasks));
     localStorage.setItem("bj_sprint",     JSON.stringify(weekIntentions));
     localStorage.setItem("bj_reflections",JSON.stringify(reflections));
-    // Re-render active views
-    renderCalendar(); renderChecklist(); renderDashboard(); renderOverdue(); pomRender(); setTimeout(renderTrendChart,200);
-    if(document.getElementById("habits").classList.contains("active"))    renderHabitGrid();
-    if(document.getElementById("futurelog").classList.contains("active")) { renderFutureLog(); renderCountdowns(); }
-    if(document.getElementById("stats").classList.contains("active"))     renderStats();
-    if(document.getElementById("journal").classList.contains("active"))     renderJournalPage();
-    if(document.getElementById("collections").classList.contains("active")) renderCollections();
-    renderSprint();
+    localStorage.setItem("bj_sleepLog",   JSON.stringify(sleepLog));
+    localStorage.setItem("bj_waterLog",   JSON.stringify(waterLog));
+    // Re-render only active/always-visible views
+    if(isTabActive('calendar'))     renderCalendar();
+    if(isTabActive('checklist'))    renderChecklist();
+    if(isTabActive('habits'))       renderHabitGrid();
+    if(isTabActive('futurelog'))    { renderFutureLog(); renderCountdowns(); }
+    if(isTabActive('stats'))        { renderStats(); setTimeout(renderTrendChart,200); }
+    if(isTabActive('journal'))      renderJournalPage();
+    if(isTabActive('collections'))  renderCollections();
+    if(isTabActive('week'))         renderWeekView();
+    renderDashboard(); renderOverdue(); pomRender(); renderSprint();
 }
 window.applyFirebaseData = applyFirebaseData;
 
@@ -1432,7 +1446,10 @@ function importData(e){
             if(d.futureLog) futureLog=d.futureLog; if(d.moodLog) moodLog=d.moodLog;
             if(d.journal) journal=d.journal; if(d.countdowns) countdowns=d.countdowns;
             if(d.recurringTasks) recurringTasks=d.recurringTasks;
-            saveData(); renderCalendar(); renderChecklist(); renderHabitGrid(); renderFutureLog(); renderDashboard();
+            saveData(); renderCalendar(); renderDashboard();
+            if(isTabActive('checklist'))  renderChecklist();
+            if(isTabActive('habits'))     renderHabitGrid();
+            if(isTabActive('futurelog'))  { renderFutureLog(); renderCountdowns(); };
             alert("Data imported successfully!");
         } catch(err){ alert("Invalid file."); }
     };
@@ -1451,6 +1468,7 @@ function applyDarkMode(){
 }
 
 // TABS
+function isTabActive(tab){ var p=document.getElementById(tab); return p&&p.classList.contains('active'); }
 function switchTab(tab, btn){
     document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active");});
     document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
@@ -1658,12 +1676,15 @@ function createTaskElement(task,dateKey,idx){
     if(task.status&&task.status!=="pending"&&task.status!=="completed") disp=sm[task.status]+" "+task.title;
     text.textContent=disp; text.style.cursor="pointer";
     text.onclick=(function(dk,i,t){ return function(e){e.stopPropagation();openDetailsModal(dk,i,t);}; })(dateKey,idx,task);
-    // Drag to reorder
+    // Drag to reorder (mouse + touch)
     taskEl.setAttribute('draggable','true');
+    taskEl.setAttribute('data-drag-key', dateKey);
+    taskEl.setAttribute('data-drag-idx', idx);
     taskEl.ondragstart=(function(dk,i){ return function(e){ onTaskDragStart(e,dk,i); }; })(dateKey,idx);
     taskEl.ondragend=onTaskDragEnd;
     taskEl.ondragover=onTaskDragOver;
     taskEl.ondrop=(function(dk,i){ return function(e){ onTaskDrop(e,dk,i); }; })(dateKey,idx);
+    addTouchDrag(taskEl, dateKey, idx);
     // Sub-task progress
     if(task.subtasks && task.subtasks.length){
         var total=task.subtasks.length;
@@ -2563,27 +2584,27 @@ renderCalendar(); renderChecklist(); renderDashboard(); renderCountdowns(); rend
 
 <script>
 // ═══════════════════════════════════════════════════
-//  WATER TRACKER
+//  WATER TRACKER  (synced via Firebase)
 // ═══════════════════════════════════════════════════
-var waterKey = 'bj_water_'+getTodayKey();
-var waterCount = parseInt(localStorage.getItem(waterKey)||'0');
+function getWaterCount(){ return (waterLog[getTodayKey()]||0); }
 function renderWater(){
     var el=document.getElementById('waterGlasses');
     if(!el) return;
+    var wc=getWaterCount();
     var html='';
     for(var i=0;i<8;i++){
-        html+='<span class="water-glass'+(i<waterCount?' filled':'')+('" onclick="setWater('+(i+1)+')" title="'+(i+1)+' glass'+(i>0?'es':'')+'">💧</span>');
+        html+='<span class="water-glass'+(i<wc?' filled':'')+('" onclick="setWater('+(i+1)+')" title="'+(i+1)+' glass'+(i>0?'es':'')+'">💧</span>');
     }
     el.innerHTML=html;
     var cnt=document.getElementById('waterCount');
-    if(cnt) cnt.textContent=waterCount+' / 8 glasses';
+    if(cnt) cnt.textContent=wc+' / 8 glasses';
 }
 function setWater(n){
-    waterCount=(waterCount===n)?n-1:n;
-    localStorage.setItem(waterKey,waterCount);
-    renderWater();
+    var wc=getWaterCount();
+    waterLog[getTodayKey()]=(wc===n)?n-1:n;
+    saveData(); renderWater();
 }
-function resetWater(){ waterCount=0; localStorage.setItem(waterKey,0); renderWater(); }
+function resetWater(){ waterLog[getTodayKey()]=0; saveData(); renderWater(); }
 
 // ═══════════════════════════════════════════════════
 //  DAILY QUOTE
@@ -3008,29 +3029,22 @@ function renderWeekView(){
 }
 
 // ═══════════════════════════════════════════════════
-//  SLEEP TRACKER
+//  SLEEP TRACKER  (synced via Firebase)
 // ═══════════════════════════════════════════════════
 function saveSleep(){
     var bed=document.getElementById('sleepBed');
     var wake=document.getElementById('sleepWake');
     if(!bed||!wake) return;
-    var key='bj_sleep_'+getTodayKey();
-    localStorage.setItem(key, JSON.stringify({bed:bed.value, wake:wake.value}));
-    renderSleepBadge();
+    sleepLog[getTodayKey()]={bed:bed.value, wake:wake.value};
+    saveData(); renderSleepBadge();
 }
 function loadSleep(){
     var bed=document.getElementById('sleepBed');
     var wake=document.getElementById('sleepWake');
     if(!bed||!wake) return;
-    var key='bj_sleep_'+getTodayKey();
-    var saved=localStorage.getItem(key);
-    if(saved){
-        try{
-            var s=JSON.parse(saved);
-            bed.value=s.bed||'';
-            wake.value=s.wake||'';
-        }catch(e){}
-    }
+    var s=sleepLog[getTodayKey()]||{};
+    bed.value=s.bed||'';
+    wake.value=s.wake||'';
     renderSleepBadge();
 }
 function calcSleepHours(bed, wake){
@@ -3134,6 +3148,71 @@ function onTaskDrop(e, dateKey, idx){
     saveData(); renderCalendar();
 }
 
+
+// ═══════════════════════════════════════════════════
+//  TOUCH DRAG-TO-REORDER (mobile)
+// ═══════════════════════════════════════════════════
+var touchDragEl=null, touchDragKey=null, touchDragIdx=null, touchClone=null;
+function addTouchDrag(el, dateKey, idx){
+    el.addEventListener('touchstart', function(e){
+        if(e.touches.length!==1) return;
+        touchDragKey=dateKey; touchDragIdx=idx; touchDragEl=el;
+        // Create floating clone
+        var r=el.getBoundingClientRect();
+        touchClone=el.cloneNode(true);
+        touchClone.style.cssText='position:fixed;z-index:9999;opacity:0.85;pointer-events:none;'+
+            'width:'+r.width+'px;left:'+r.left+'px;top:'+r.top+'px;'+
+            'box-shadow:0 6px 20px rgba(0,0,0,0.25);border-radius:8px;background:var(--bg-white);padding:6px 10px;';
+        document.body.appendChild(touchClone);
+        el.style.opacity='0.3';
+    },{passive:true});
+    el.addEventListener('touchmove', function(e){
+        if(!touchClone) return;
+        e.preventDefault();
+        var t=e.touches[0];
+        touchClone.style.left=(t.clientX-60)+'px';
+        touchClone.style.top=(t.clientY-20)+'px';
+        // Highlight element under finger
+        touchClone.style.display='none';
+        var under=document.elementFromPoint(t.clientX,t.clientY);
+        touchClone.style.display='';
+        if(under){
+            var targetEl=under.closest('[data-drag-key]');
+            document.querySelectorAll('.drag-over-touch').forEach(function(x){x.classList.remove('drag-over-touch');});
+            if(targetEl) targetEl.classList.add('drag-over-touch');
+        }
+    },{passive:false});
+    el.addEventListener('touchend', function(e){
+        if(!touchClone) return;
+        var t=e.changedTouches[0];
+        touchClone.style.display='none';
+        var under=document.elementFromPoint(t.clientX,t.clientY);
+        touchClone.style.display='';
+        if(under){
+            var targetEl=under.closest('[data-drag-key]');
+            if(targetEl){
+                var targetKey=targetEl.getAttribute('data-drag-key');
+                var targetIdx=parseInt(targetEl.getAttribute('data-drag-idx'));
+                if(!(targetKey===touchDragKey&&targetIdx===touchDragIdx)){
+                    if(!tasks[touchDragKey]) return cleanup();
+                    var moved=tasks[touchDragKey].splice(touchDragIdx,1)[0];
+                    if(!tasks[targetKey]) tasks[targetKey]=[];
+                    tasks[targetKey].splice(targetIdx,0,moved);
+                    if(tasks[touchDragKey].length===0) delete tasks[touchDragKey];
+                    saveData(); renderCalendar();
+                }
+            }
+        }
+        cleanup();
+        function cleanup(){
+            if(touchClone){ touchClone.remove(); touchClone=null; }
+            if(touchDragEl){ touchDragEl.style.opacity=''; touchDragEl=null; }
+            document.querySelectorAll('.drag-over-touch').forEach(function(x){x.classList.remove('drag-over-touch');});
+            touchDragKey=null; touchDragIdx=null;
+        }
+    },{passive:true});
+}
+
 // ═══════════════════════════════════════════════════
 //  PATCH: openModal + openEditModal + saveTask for sub-tasks
 // ═══════════════════════════════════════════════════
@@ -3207,7 +3286,25 @@ document.addEventListener('DOMContentLoaded', function(){
 if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
         navigator.serviceWorker.register('./sw.js')
-            .then(function(reg){ console.log('SW registered'); })
+            .then(function(reg){
+                console.log('SW registered');
+                // Check for updates every time the app loads
+                reg.update();
+                // When a new SW takes over, reload so user gets latest version
+                reg.addEventListener('updatefound', function(){
+                    var newWorker = reg.installing;
+                    if(!newWorker) return;
+                    newWorker.addEventListener('statechange', function(){
+                        if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
+                            // New version available — reload silently
+                            navigator.serviceWorker.addEventListener('controllerchange', function(){
+                                window.location.reload();
+                            });
+                            newWorker.postMessage({type:'SKIP_WAITING'});
+                        }
+                    });
+                });
+            })
             .catch(function(err){ console.warn('SW failed:', err); });
     });
 }
