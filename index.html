@@ -383,13 +383,13 @@ textarea { resize: vertical; min-height: 80px; }
 .sleep-input-row label { font-size:0.82rem; color:var(--text-muted); }
 .sleep-input-row input[type=time] { padding:4px 8px; border:1.5px solid var(--border); border-radius:8px; font-size:0.85rem; background:var(--bg-white); color:var(--text-dark); font-family:inherit; }
 .sleep-hours-badge { font-size:1.1rem; font-weight:700; color:var(--primary); }
-.week-view-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; overflow-x:auto; }
-.week-day-col { background:var(--bg-white); border-radius:var(--radius); padding:8px 6px; min-height:120px; border:1px solid var(--border); }
+.week-view-grid { display:grid; grid-template-columns:repeat(7,minmax(120px,1fr)); gap:6px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
+.week-day-col { background:var(--bg-white); border-radius:var(--radius); padding:8px 6px; min-height:120px; border:1px solid var(--border); min-width:0; }
 .week-day-header { font-size:0.75rem; font-weight:700; color:var(--text-muted); text-align:center; margin-bottom:4px; }
 .week-day-num { font-size:1.1rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:6px; }
 .week-day-num.today { background:var(--primary); color:#fff; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; margin:0 auto 6px; font-size:0.9rem; }
 .week-task-item { font-size:0.72rem; padding:2px 5px; border-radius:4px; margin-bottom:2px; background:rgba(83,102,241,0.1); color:var(--primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer; }
-.week-nav { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.week-nav { display:flex; align-items:center; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
 .week-today { border-color:var(--primary)!important; background:rgba(83,102,241,0.04)!important; }
 .week-day-name { font-size:0.7rem; font-weight:700; color:var(--text-muted); display:block; text-align:center; }
 .week-day-tasks { min-height:60px; }
@@ -849,6 +849,11 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
 @media (max-width: 600px) {
   .finance-summary { grid-template-columns: 1fr; }
   .finance-card-amount { font-size: 1.3rem; }
+  .week-view-grid { grid-template-columns: repeat(7, minmax(100px, 1fr)); gap:4px; }
+  .week-day-col { padding: 6px 4px; min-height: 90px; }
+  .week-day-name { font-size: 0.65rem; }
+  .week-task-item { font-size: 0.68rem; padding: 2px 3px; }
+  .week-nav button, .week-nav .btn-today { font-size: 0.8rem; padding: 5px 10px; }
 }
 
 </style>
@@ -1019,7 +1024,7 @@ kbd { background:var(--bg-light); border:1px solid var(--border); border-bottom-
         <button onclick="nextWeek()">Next →</button>
         <button class="btn-today" onclick="goToWeekToday()">This Week</button>
       </div>
-      <div class="week-view-grid" id="weekGrid"></div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;width:100%;"><div class="week-view-grid" id="weekGrid"></div></div>
     </div>
   </div>
 
