@@ -51,8 +51,9 @@ body.dark .search-result-item { background: var(--bg-white); }
 body.dark .journal-editor { background: #1a1a2e; color: var(--text-dark); }
 body.dark .countdown-block { background: var(--bg-white); }
 
-body { font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, var(--bg-light) 0%, #f0f3f7 100%); color: var(--text-dark); min-height: 100vh; padding: 20px; transition: background 0.3s, color 0.3s; }
-.container { max-width: 1100px; margin: 0 auto; }
+html { overflow-x: hidden; }
+body { font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, var(--bg-light) 0%, #f0f3f7 100%); color: var(--text-dark); min-height: 100vh; padding: 20px; transition: background 0.3s, color 0.3s; overflow-x: hidden; }
+.container { max-width: 1100px; margin: 0 auto; overflow-x: hidden; }
 
 /* Header */
 header { text-align: center; margin-bottom: 20px; animation: slideDown 0.6s ease; }
@@ -68,8 +69,8 @@ h1 { font-family: 'Playfair Display', serif; font-size: 3rem; margin-bottom: 8px
 .tab-btn { background: white; border: 2px solid var(--border); color: var(--text-dark); padding: 9px 16px; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Fredoka', sans-serif; }
 .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 .tab-btn:hover:not(.active) { border-color: var(--primary); transform: translateY(-2px); }
-.page { display: none; animation: fadeIn 0.4s ease; }
-.page.active { display: block; }
+.page { display: none; animation: fadeIn 0.4s ease; overflow-x: hidden; max-width: 100%; }
+.page.active { display: block;  overflow-x: hidden; max-width: 100%; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
@@ -384,7 +385,7 @@ textarea { resize: vertical; min-height: 80px; }
 .sleep-input-row input[type=time] { padding:4px 8px; border:1.5px solid var(--border); border-radius:8px; font-size:0.85rem; background:var(--bg-white); color:var(--text-dark); font-family:inherit; }
 .sleep-hours-badge { font-size:1.1rem; font-weight:700; color:var(--primary); }
 .week-view-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; width:100%; }
-.week-scroll-outer { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.week-scroll-outer { width:100%; max-width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; position:relative; }
 .week-day-col { background:var(--bg-white); border-radius:var(--radius); padding:8px 6px; min-height:120px; border:1px solid var(--border); min-width:0; }
 .week-day-header { font-size:0.75rem; font-weight:700; color:var(--text-muted); text-align:center; margin-bottom:4px; }
 .week-day-num { font-size:1.1rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:6px; }
