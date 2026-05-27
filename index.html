@@ -3107,7 +3107,7 @@ function renderYearlyHeatmap(){
 function renderTrendChart(){
     var svg=document.getElementById('trendChart');
     if(!svg) return;
-    var W=580,H=170,padL=36,padR=16,padT=16,padB=28;
+    var W=600, H=220, padL=42, padR=42, padT=36, padB=32;
     var chartW=W-padL-padR, chartH=H-padT-padB;
     var months=[];
     var d=new Date(); d.setDate(1);
@@ -3125,33 +3125,87 @@ function renderTrendChart(){
         taskPcts.push(total>0?Math.round(done/total*100):null);
         moodAvgs.push(mcount>0?Math.round(msum/mcount*10)/10:null);
     });
-    function pts(vals,max){
-        return vals.map(function(v,i){
-            var x=padL+i*(chartW/(vals.length-1));
-            var y=v===null?null:padT+chartH-(v/max*chartH);
-            return {x:x,y:y,v:v};
-        });
-    }
-    function polyline(pts){ return pts.filter(function(p){return p.y!==null;}).map(function(p){return p.x+','+p.y;}).join(' '); }
-    var tpts=pts(taskPcts,100), mpts=pts(moodAvgs,5);
-    var out='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="Fredoka,sans-serif">';
-    // Grid lines
+    // x position for each month
+    function xPos(i){ return padL + i*(chartW/(months.length-1)); }
+    // y position for task % (left axis 0-100)
+    function yTask(v){ return padT + chartH - (v/100*chartH); }
+    // y position for mood avg (right axis 0-5)
+    function yMood(v){ return padT + chartH - (v/5*chartH); }
+    function polyline(pts){ return pts.filter(function(p){return p!==null;}).map(function(p){return p.x+','+p.y;}).join(' '); }
+    var tPts = taskPcts.map(function(v,i){ return v!==null?{x:xPos(i),y:yTask(v),v:v}:null; });
+    var mPts = moodAvgs.map(function(v,i){ return v!==null?{x:xPos(i),y:yMood(v),v:v}:null; });
+
+    var out='<svg width="100%" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" font-family="Fredoka,sans-serif">';
+
+    // Background
+    out+='<rect width="'+W+'" height="'+H+'" fill="transparent"/>';
+
+    // Horizontal grid lines (based on task % scale)
     [0,25,50,75,100].forEach(function(v){
-        var y=padT+chartH-(v/100*chartH);
-        out+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'" stroke="#e5e7eb" stroke-width="1"/>';
-        out+='<text x="'+(padL-5)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="#94a3b8">'+v+'%</text>';
+        var y=yTask(v);
+        out+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-padR)+'" y2="'+y+'" stroke="#e5e7eb" stroke-width="1" stroke-dasharray="3 3"/>';
+        // Left axis: task %
+        out+='<text x="'+(padL-6)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="#5366f1" opacity="0.8">'+v+'%</text>';
     });
-    // Lines
-    out+='<polyline points="'+polyline(tpts)+'" fill="none" stroke="#5366f1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
-    out+='<polyline points="'+polyline(mpts.map(function(p){return p.y!==null?{x:p.x,y:padT+chartH-(p.v/5*chartH)}:{x:p.x,y:null}; }))+'" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="4 2"/>';
-    // Dots
-    tpts.forEach(function(p){ if(p.y!==null) out+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="#5366f1"/><text x="'+p.x+'" y="'+(p.y-8)+'" text-anchor="middle" font-size="10" fill="#5366f1">'+p.v+'%</text>'; });
-    mpts.forEach(function(p){ if(p.y!==null){ var cy=padT+chartH-(p.v/5*chartH); out+='<circle cx="'+p.x+'" cy="'+cy+'" r="4" fill="#ff6b6b"/>'; } });
+    // Right axis: mood 0-5
+    [0,1,2,3,4,5].forEach(function(v){
+        var y=yMood(v);
+        out+='<text x="'+(W-padR+6)+'" y="'+(y+4)+'" text-anchor="start" font-size="10" fill="#ff6b6b" opacity="0.8">'+v+'</text>';
+    });
+
+    // Left axis label
+    out+='<text x="12" y="'+(padT+chartH/2)+'" text-anchor="middle" font-size="10" fill="#5366f1" transform="rotate(-90,12,'+(padT+chartH/2)+')">Tasks %</text>';
+    // Right axis label
+    out+='<text x="'+(W-10)+'" y="'+(padT+chartH/2)+'" text-anchor="middle" font-size="10" fill="#ff6b6b" transform="rotate(90,'+(W-10)+','+(padT+chartH/2)+')">Mood</text>';
+
+    // Area fill under task line
+    var tFilledPts = tPts.filter(function(p){return p!==null;});
+    if(tFilledPts.length>1){
+        var areaPath='M'+tFilledPts[0].x+','+tFilledPts[0].y;
+        tFilledPts.slice(1).forEach(function(p){ areaPath+=' L'+p.x+','+p.y; });
+        areaPath+=' L'+tFilledPts[tFilledPts.length-1].x+','+(padT+chartH)+' L'+tFilledPts[0].x+','+(padT+chartH)+' Z';
+        out+='<path d="'+areaPath+'" fill="rgba(83,102,241,0.08)"/>';
+    }
+
+    // Task completion line
+    out+='<polyline points="'+polyline(tPts)+'" fill="none" stroke="#5366f1" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+    // Mood avg line (dashed)
+    out+='<polyline points="'+polyline(mPts)+'" fill="none" stroke="#ff6b6b" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 3"/>';
+
+    // Dots + labels — smart offset to avoid overlap
+    tPts.forEach(function(p,i){
+        if(!p) return;
+        var mP = mPts[i];
+        // If mood dot is close vertically, push task label up; else always above dot
+        var labelY = (mP && Math.abs(p.y - mP.y) < 18) ? p.y - 14 : p.y - 9;
+        out+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4.5" fill="#5366f1" stroke="white" stroke-width="1.5"/>';
+        out+='<text x="'+p.x+'" y="'+labelY+'" text-anchor="middle" font-size="10" font-weight="700" fill="#5366f1">'+p.v+'%</text>';
+    });
+    mPts.forEach(function(p,i){
+        if(!p) return;
+        var tP = tPts[i];
+        // If task dot is close, push mood label below; else above
+        var labelY = (tP && Math.abs(p.y - tP.y) < 18) ? p.y + 16 : p.y - 9;
+        out+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4.5" fill="#ff6b6b" stroke="white" stroke-width="1.5"/>';
+        out+='<text x="'+p.x+'" y="'+labelY+'" text-anchor="middle" font-size="10" font-weight="700" fill="#ff6b6b">'+p.v+'</text>';
+    });
+
     // X-axis labels
-    months.forEach(function(m,i){ var x=padL+i*(chartW/(months.length-1)); out+='<text x="'+x+'" y="'+(H-4)+'" text-anchor="middle" font-size="11" fill="#94a3b8">'+MONTH_SHORT[m.month]+'</text>'; });
-    // Legend
-    out+='<line x1="'+padL+'" y1="14" x2="'+(padL+20)+'" y2="14" stroke="#5366f1" stroke-width="2.5"/><text x="'+(padL+24)+'" y="18" font-size="11" fill="#5366f1">Task completion</text>';
-    out+='<line x1="'+(padL+140)+'" y1="14" x2="'+(padL+160)+'" y2="14" stroke="#ff6b6b" stroke-width="2.5" stroke-dasharray="4 2"/><text x="'+(padL+164)+'" y="18" font-size="11" fill="#ff6b6b">Mood avg</text>';
+    months.forEach(function(m,i){
+        var x=xPos(i);
+        out+='<text x="'+x+'" y="'+(H-6)+'" text-anchor="middle" font-size="11" fill="#94a3b8">'+MONTH_SHORT[m.month]+'</text>';
+    });
+
+    // Legend — top center
+    var lx = W/2 - 90;
+    out+='<rect x="'+lx+'" y="6" width="180" height="22" rx="6" fill="rgba(255,255,255,0.07)"/>';
+    out+='<line x1="'+(lx+8)+'" y1="17" x2="'+(lx+22)+'" y2="17" stroke="#5366f1" stroke-width="2.5"/>';
+    out+='<circle cx="'+(lx+15)+'" cy="17" r="3" fill="#5366f1"/>';
+    out+='<text x="'+(lx+26)+'" y="21" font-size="11" fill="#5366f1">Task completion</text>';
+    out+='<line x1="'+(lx+110)+'" y1="17" x2="'+(lx+124)+'" y2="17" stroke="#ff6b6b" stroke-width="2.5" stroke-dasharray="4 2"/>';
+    out+='<circle cx="'+(lx+117)+'" cy="17" r="3" fill="#ff6b6b"/>';
+    out+='<text x="'+(lx+128)+'" y="21" font-size="11" fill="#ff6b6b">Mood avg</text>';
+
     out+='</svg>';
     svg.outerHTML=out;
 }
