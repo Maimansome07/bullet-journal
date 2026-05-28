@@ -91,7 +91,7 @@ h1 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.45rem; margin-bo
 .dash-date-sub { font-size: 0.85rem; opacity: 0.85; }
 .dash-toggle-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 0.9rem; padding: 4px 10px; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; box-shadow: none; transform: none; }
 .dash-toggle-btn:hover { background: rgba(255,255,255,0.35); transform: none; box-shadow: none; }
-.dash-body { padding: 16px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.dash-body { padding: 0; display: flex; flex-direction: column; }
 .dash-section-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.06em; }
 .dash-mood-row { display: flex; gap: 6px; flex-wrap: wrap; }
 .mood-btn-sm { font-size: 1.3rem; cursor: pointer; padding: 3px 5px; border-radius: 8px; background: transparent; border: 2px solid transparent; transition: all var(--transition); box-shadow: none; }
@@ -441,7 +441,7 @@ textarea { resize: vertical; min-height: 80px; }
     .month-display { font-size: 1.3rem; min-width: auto; }
     .form-row { grid-template-columns: 1fr; }
     .journal-layout { grid-template-columns: 1fr; }
-    .dash-body { grid-template-columns: 1fr 1fr 1fr; }
+    .dash-main-grid { grid-template-columns: 1fr 1fr; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -507,7 +507,7 @@ textarea { resize: vertical; min-height: 80px; }
     .dash-header { padding: 10px 14px; }
     .dash-date-main { font-size: 1rem; }
     .dash-date-sub { font-size: 0.78rem; }
-    .dash-body { grid-template-columns: 1fr; padding: 12px 14px; gap: 12px; }
+    .dash-main-grid { grid-template-columns: 1fr; } .dash-top-strip { flex-wrap: wrap; }
 
     /* ─ Key section ─ */
     .key-grid { grid-template-columns: 1fr 1fr; }
@@ -1238,6 +1238,38 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
 .review-save-btn:hover { background:#4338ca; }
 .review-saved-badge { display:none; text-align:center; color:var(--success); font-size:0.85rem; font-weight:600; margin-top:8px; }
 
+
+/* ── Redesigned Dashboard ── */
+.dash-top-strip { display:flex; align-items:center; justify-content:space-between; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap; }
+.dash-mood-compact { display:flex; align-items:center; gap:4px; }
+.dash-mood-compact .mood-btn-sm { font-size:1.1rem; padding:2px 4px; }
+.dash-water-compact { display:flex; align-items:center; gap:5px; }
+.dash-water-glasses { display:flex; gap:3px; }
+.dash-water-glass { font-size:1rem; cursor:pointer; opacity:0.22; transition:opacity var(--transition); user-select:none; }
+.dash-water-glass.filled { opacity:1; }
+.dash-water-label { font-size:0.72rem; color:var(--text-muted); font-weight:500; }
+.dash-main-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.dash-col { padding:16px 20px; }
+.dash-col:first-child { border-right:1px solid var(--border); }
+.dash-col-title { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:10px; }
+.dash-score-strip { padding:8px 20px; border-top:1px solid var(--border); display:flex; align-items:center; gap:10px; background:var(--bg-light); border-radius:0 0 16px 16px; }
+.dash-score-label { font-size:0.72rem; color:var(--text-muted); font-weight:500; flex:1; }
+.dash-score-value { font-size:0.85rem; font-weight:700; color:var(--primary); }
+
+/* ── Focus Tab ── */
+.focus-container { max-width:600px; margin:0 auto; padding:10px 0; }
+.focus-top { display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+.focus-top h2 { font-size:1.3rem; font-weight:700; margin:0; flex:1; }
+.focus-note-wrap { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); padding:14px 18px; margin-bottom:18px; }
+.focus-note-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:8px; }
+.focus-note-input { width:100%; border:none; outline:none; font-family:'Inter',sans-serif; font-size:1rem; color:var(--text-dark); background:transparent; resize:none; }
+
+/* ── Backup strip (compact) ── */
+.backup-strip { display:flex; align-items:center; gap:8px; padding:8px 14px; background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); margin-bottom:14px; flex-wrap:wrap; }
+.backup-strip-label { font-size:0.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-right:4px; }
+.btn-backup-sm { padding:4px 10px; font-size:0.75rem; font-weight:500; border:1px solid var(--border); border-radius:6px; background:var(--bg-white); color:var(--text-muted); cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--transition); white-space:nowrap; }
+.btn-backup-sm:hover { border-color:var(--primary); color:var(--primary); transform:none; box-shadow:none; }
+
 </style>
 </head>
 <body>
@@ -1293,91 +1325,53 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
       <button class="dash-toggle-btn" id="dashToggleBtn">▲ <span data-i18n="btn_hide">Hide</span></button>
     </div>
     <div class="dash-body" id="dashBody">
-      <div class="dash-section">
-        <div class="dash-section-title" data-i18n="dash_mood">Today's Mood</div>
-        <div class="dash-mood-row" id="dashMoodRow"></div>
-      </div>
-      <div class="dash-section" id="dashQuoteSection"></div>
-      <div class="dash-section">
-        <div class="water-tracker">
-          <div class="water-header">
-            <span class="water-title" data-i18n="dash_water">💧 Water Intake</span>
-            <span class="water-count" id="waterCount">0 / 8 glasses</span>
-          </div>
-          <div class="water-glasses" id="waterGlasses"></div>
-          <button class="water-reset" onclick="resetWater()" data-i18n="btn_reset">Reset</button>
+      <!-- Top strip: mood + water -->
+      <div class="dash-top-strip">
+        <div class="dash-mood-compact">
+          <span style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.07em;margin-right:6px;" data-i18n="dash_mood">Mood</span>
+          <div id="dashMoodRow" class="dash-mood-compact"></div>
+        </div>
+        <div class="dash-water-compact">
+          <span class="dash-water-label">💧</span>
+          <div class="dash-water-glasses" id="waterGlasses"></div>
+          <span class="dash-water-label" id="waterCount" style="margin-left:4px;"></span>
+          <button class="water-reset" onclick="resetWater()" style="margin-left:4px;font-size:0.7rem;padding:2px 6px;">↺</button>
         </div>
       </div>
-      <div class="dash-section">
-        <div class="dash-section-title" data-i18n="dash_tasks_today">Tasks Today</div>
-        <div id="dashTasks"></div>
+      <!-- Main 2-col: Tasks | Habits -->
+      <div class="dash-main-grid">
+        <div class="dash-col">
+          <div class="dash-col-title" data-i18n="dash_tasks_today">Tasks Today</div>
+          <div id="dashTasks"></div>
+        </div>
+        <div class="dash-col">
+          <div class="dash-col-title" data-i18n="tab_habits">Habits</div>
+          <div id="dashHabits"></div>
+        </div>
       </div>
-      <div class="dash-section">
-        <div class="dash-section-title" data-i18n="tab_habits">Habits</div>
-        <div id="dashHabits"></div>
-      </div>
-      <div class="dash-section">
-        <div class="dash-section-title" data-i18n="dash_timeline">Today's Timeline</div>
-        <div id="dashTimeline"></div>
-      </div>
-      <div class="dash-section">
-        <div class="dash-section-title" data-i18n="dash_holidays">Holidays &amp; Countdowns</div>
-        <div id="dashHolidaysCD"></div>
-      </div>
-      <div class="dash-section" id="dashProductivitySection">
-        <div class="dash-section-title">📊 Today's Score</div>
-        <div id="dashProductivityScore"></div>
-      </div>
-      <div class="dash-section" id="dashWeatherSection">
-        <div class="dash-section-title">🌤 Weather</div>
-        <div id="dashWeather"><span style="color:var(--text-muted);font-size:0.85rem;">Loading…</span></div>
+      <!-- Score strip -->
+      <div class="dash-score-strip">
+        <span class="dash-score-label">Today's productivity score</span>
+        <span class="dash-score-value" id="dashProductivityScore"></span>
       </div>
     </div>
   </div>
+  <!-- Hidden containers kept for JS compatibility -->
+  <div style="display:none" id="dashQuoteSection"></div>
+  <div style="display:none" id="dashTimeline"></div>
+  <div style="display:none" id="dashHolidaysCD"></div>
+  <div style="display:none" id="dashWeather"></div>
+  <div style="display:none" id="dashProductivitySection"></div>
+  <div style="display:none" id="dashWeatherSection"></div>
 
 
-  <!-- BACKUP CARD -->
-        <div class="sleep-tracker">
-          <div class="sleep-header">
-            <span class="sleep-title" data-i18n="sleep_log">🌙 Sleep Log</span>
-            <span class="sleep-hours-badge" id="sleepBadge"></span>
-          </div>
-          <div class="sleep-input-row">
-            <label data-i18n="sleep_bedtime">Bedtime</label>
-            <input type="time" id="sleepBed" onchange="saveSleep()">
-            <label data-i18n="sleep_wakeup">Wake up</label>
-            <input type="time" id="sleepWake" onchange="saveSleep()">
-          </div>
-        </div>
-
-        <div class="pomodoro-card">
-        <h3>🍅 <span data-i18n="focus_timer">Focus Timer</span></h3>
-        <div class="pom-display" id="pomDisplay">25:00</div>
-        <div class="pom-mode-label" id="pomModeLabel"><span data-i18n="pom_work">WORK SESSION</span></div>
-        <div class="pom-btns">
-          <button class="pom-btn pom-primary" id="pomStartBtn" onclick="pomToggle()">▶ <span data-i18n="pom_start">Start</span></button>
-          <button class="pom-btn" onclick="pomReset()">↺ <span data-i18n="btn_reset">Reset</span></button>
-          <button class="pom-btn" id="pomBreakBtn" onclick="pomSetBreak(5)">☕ <span data-i18n="pom_break5">5 min break</span></button>
-          <button class="pom-btn" id="pomLongBtn" onclick="pomSetBreak(15)">🛋 <span data-i18n="pom_break15">15 min break</span></button>
-        </div>
-        <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></div></div>
-        <div class="pom-task-row">
-          <span class="pom-task-label">Focus on:</span>
-          <select class="pom-task-select" id="pomTaskSelect" onchange="setPomTask()">
-            <option value="">— free session —</option>
-          </select>
-        </div>
-        <div class="pom-current-task" id="pomCurrentTask"></div>
-        <div class="pom-sessions-label" id="pomSessions">Sessions completed today: 0</div>
-      </div>
-<div class="backup-card" id="backupCard">
-    <div class="backup-card-header" data-i18n="backup_title">📦 Data Backup</div>
-    <div class="backup-card-body">
-      <button class="btn-backup btn-export" onclick="exportData()">⬇ <span data-i18n="backup_export">Export JSON Backup</span></button>
-        <button class="btn-backup" onclick="backupToDrive()" style="background:#4285f4;color:white;border:none;" title="Backup to Google Drive" data-i18n="backup_drive">☁️ Drive Backup</button>
-      <button class="btn-backup btn-import" onclick="document.getElementById('importFileDash').click()">⬆ <span data-i18n="backup_import">Import JSON Backup</span></button>
-      <input type="file" id="importFileDash" accept=".json" style="display:none" onchange="importData(event)">
-    </div>
+  <!-- BACKUP STRIP (compact) -->
+  <div class="backup-strip" id="backupCard">
+    <span class="backup-strip-label">💾 Backup</span>
+    <button class="btn-backup-sm" onclick="exportData()">⬇ Export</button>
+    <button class="btn-backup-sm" onclick="backupToDrive()" style="background:#4285f4;color:white;border-color:#4285f4;">☁️ Drive</button>
+    <button class="btn-backup-sm" onclick="document.getElementById('importFileDash').click()">⬆ Import</button>
+    <input type="file" id="importFileDash" accept=".json" style="display:none" onchange="importData(event)">
   </div>
 
   <!-- OVERDUE TASKS -->
@@ -1403,6 +1397,7 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
   <div class="tabs-wrapper">
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('calendar',this)">📅 <span data-i18n="tab_calendar">Calendar</span></button>
+    <button class="tab-btn" onclick="switchTab('focus',this)">🍅 <span data-i18n="tab_focus">Focus</span></button>
     <button class="tab-btn" onclick="switchTab('week',this)">📆 <span data-i18n="tab_week">Week</span></button>
     <button class="tab-btn" onclick="switchTab('journal',this)">📓 <span data-i18n="tab_journal">Journal</span></button>
     <button class="tab-btn" onclick="switchTab('checklist',this)">✓ <span data-i18n="tab_checklist">Checklist</span></button>
@@ -5119,7 +5114,7 @@ var TRANSLATIONS = {
     tab_trackers_full:"📈 Trackers",
     tracker_metric_name:"METRIC NAME", tracker_unit:"UNIT", tracker_daily_goal:"DAILY GOAL", tracker_color:"COLOR",
     // Year in Pixels
-    tab_pixels:"Year in Pixels",
+    tab_focus:"Focus", tab_pixels:"Year in Pixels",
     // Body Metrics
     tab_body:"Body", body_saved:"Entry logged!",
     // Monthly Review
@@ -5195,7 +5190,7 @@ var TRANSLATIONS = {
     search_placeholder_short:"🔍 搜索…",
     // Trackers
     tracker_metric_name:"指标名称", tracker_unit:"单位", tracker_daily_goal:"每日目标", tracker_color:"颜色",
-    tab_pixels:"年度像素", tab_body:"身体", body_saved:"已记录！", tab_monthreview:"月度回顾",
+    tab_focus:"专注", tab_pixels:"年度像素", tab_body:"身体", body_saved:"已记录！", tab_monthreview:"月度回顾",
     // Quick Capture
     qc_title:"⚡ 快速记录", qc_ph:"你需要做什么？", qc_add:"添加任务",
     // Drive Backup
@@ -5267,7 +5262,7 @@ var TRANSLATIONS = {
     search_placeholder_short:"🔍 ค้นหา…",
     // Trackers
     tracker_metric_name:"ชื่อตัวชี้วัด", tracker_unit:"หน่วย", tracker_daily_goal:"เป้าหมายต่อวัน", tracker_color:"สี",
-    tab_pixels:"ปีในพิกเซล", tab_body:"ร่างกาย", body_saved:"บันทึกแล้ว!", tab_monthreview:"ทบทวนรายเดือน",
+    tab_focus:"โฟกัส", tab_pixels:"ปีในพิกเซล", tab_body:"ร่างกาย", body_saved:"บันทึกแล้ว!", tab_monthreview:"ทบทวนรายเดือน",
     // Quick Capture
     qc_title:"⚡ บันทึกด่วน", qc_ph:"คุณต้องทำอะไร?", qc_add:"เพิ่มงาน",
     // Drive Backup
@@ -6320,7 +6315,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script>
 if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
-        navigator.serviceWorker.register('./sw.js?v=202605281500')
+        navigator.serviceWorker.register('./sw.js?v=202605281800')
             .then(function(reg){
                 reg.update();
                 reg.addEventListener('updatefound', function(){
@@ -6347,7 +6342,7 @@ if('serviceWorker' in navigator){
         navigator.serviceWorker.getRegistrations().then(function(regs){
             regs.forEach(function(r){
                 // Only keep the current registration, unregister old ones
-                if(r.active && r.active.scriptURL && !r.active.scriptURL.includes('v=202605281500')){
+                if(r.active && r.active.scriptURL && !r.active.scriptURL.includes('v=202605281800')){
                     r.unregister().then(function(){ window.location.reload(); });
                 }
             });
@@ -6872,6 +6867,50 @@ onAuthStateChanged(auth, async (user) => {
   </div>
 </div>
 
+
+
+<!-- ══ FOCUS TAB ══ -->
+<div id="focus" class="page">
+  <div class="focus-container">
+    <div class="focus-top">
+      <h2>🍅 <span data-i18n="tab_focus">Focus</span></h2>
+      <span id="pomSessions" style="font-size:0.8rem;color:var(--text-muted);font-weight:500;"></span>
+    </div>
+    <!-- Focus intention -->
+    <div class="focus-note-wrap">
+      <div class="focus-note-label">What are you working on?</div>
+      <div class="pom-task-row" style="margin:0;">
+        <select class="pom-task-select" id="pomTaskSelect" onchange="setPomTask()" style="flex:1;">
+          <option value="">— free session —</option>
+        </select>
+      </div>
+      <div class="pom-current-task" id="pomCurrentTask" style="margin-top:6px;"></div>
+    </div>
+    <!-- Pomodoro card -->
+    <div class="pomodoro-card">
+      <div class="pom-display" id="pomDisplay">25:00</div>
+      <div class="pom-mode-label" id="pomModeLabel"><span data-i18n="pom_work">WORK SESSION</span></div>
+      <div class="pom-btns">
+        <button class="pom-btn pom-primary" id="pomStartBtn" onclick="pomToggle()">▶ <span data-i18n="pom_start">Start</span></button>
+        <button class="pom-btn" onclick="pomReset()">↺ <span data-i18n="btn_reset">Reset</span></button>
+        <button class="pom-btn" id="pomBreakBtn" onclick="pomSetBreak(5)">☕ 5 min</button>
+        <button class="pom-btn" id="pomLongBtn" onclick="pomSetBreak(15)">🛋 15 min</button>
+      </div>
+      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></div></div>
+    </div>
+    <!-- Sleep log -->
+    <div class="focus-note-wrap">
+      <div class="focus-note-label">🌙 Sleep Log</div>
+      <div class="sleep-input-row">
+        <label data-i18n="sleep_bedtime">Bedtime</label>
+        <input type="time" id="sleepBed" onchange="saveSleep()">
+        <label data-i18n="sleep_wakeup">Wake up</label>
+        <input type="time" id="sleepWake" onchange="saveSleep()">
+        <span class="sleep-hours-badge" id="sleepBadge" style="margin-left:8px;"></span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="updateBanner">🆕 New version available! <button onclick="location.reload()">Refresh</button></div>
 <div id="onboardOverlay" class="onboard-overlay" style="display:none;"></div>
