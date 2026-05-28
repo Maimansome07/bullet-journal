@@ -1270,6 +1270,505 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
 .btn-backup-sm { padding:4px 10px; font-size:0.75rem; font-weight:500; border:1px solid var(--border); border-radius:6px; background:var(--bg-white); color:var(--text-muted); cursor:pointer; font-family:'Inter',sans-serif; transition:all var(--transition); white-space:nowrap; }
 .btn-backup-sm:hover { border-color:var(--primary); color:var(--primary); transform:none; box-shadow:none; }
 
+
+/* ══════════════════════════════════════════════════════════════════════
+   ✨  BEAUTIFUL REWORK  —  Enhanced Design System  v2026.05.28
+══════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Design tokens override ─────────────────────────────────────── */
+:root {
+    --primary:        #4f46e5;
+    --primary-dark:   #4338ca;
+    --primary-2:      #7c3aed;
+    --primary-soft:   rgba(79,70,229,0.08);
+    --primary-glow:   rgba(79,70,229,0.18);
+    --secondary:      #f43f5e;
+    --accent:         #f59e0b;
+    --success:        #10b981;
+    --success-soft:   rgba(16,185,129,0.09);
+    --bg:             #f1f2f8;
+    --bg-light:       #e6e7f2;
+    --bg-white:       #ffffff;
+    --text-dark:      #0f0e17;
+    --text-muted:     #6b6b88;
+    --text-light:     #a0a0be;
+    --border:         #dfe0ee;
+    --shadow-xs:      0 1px 2px rgba(15,14,23,0.04);
+    --shadow:         0 2px 8px rgba(79,70,229,0.07), 0 1px 3px rgba(15,14,23,0.04);
+    --shadow-md:      0 6px 24px rgba(79,70,229,0.11), 0 2px 8px rgba(15,14,23,0.05);
+    --shadow-lg:      0 16px 50px rgba(79,70,229,0.15), 0 4px 14px rgba(15,14,23,0.08);
+    --grad-primary:   linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    --grad-header:    linear-gradient(135deg, #4338ca 0%, #4f46e5 55%, #7c3aed 100%);
+    --grad-success:   linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --grad-danger:    linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
+    --grad-accent:    linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    --radius:         16px;
+    --radius-sm:      10px;
+    --radius-xs:      6px;
+    --transition:     180ms cubic-bezier(0.4, 0, 0.2, 1);
+    --spring:         350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+body.dark {
+    --primary:        #818cf8;
+    --primary-dark:   #6366f1;
+    --primary-2:      #a78bfa;
+    --primary-soft:   rgba(129,140,248,0.1);
+    --primary-glow:   rgba(129,140,248,0.2);
+    --secondary:      #fb7185;
+    --accent:         #fbbf24;
+    --success:        #34d399;
+    --success-soft:   rgba(52,211,153,0.09);
+    --bg:             #0c0c15;
+    --bg-light:       #14141f;
+    --bg-white:       #1a1a28;
+    --text-dark:      #e5e6f5;
+    --text-muted:     #8b8ca8;
+    --text-light:     #5a5b78;
+    --border:         #25253a;
+    --shadow-xs:      0 1px 2px rgba(0,0,0,0.5);
+    --shadow:         0 2px 8px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md:      0 6px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.25);
+    --shadow-lg:      0 16px 50px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.3);
+    --grad-primary:   linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    --grad-header:    linear-gradient(135deg, #4f46e5 0%, #6366f1 55%, #8b5cf6 100%);
+}
+
+/* ── 2. Base ────────────────────────────────────────────────────────── */
+body {
+    background: var(--bg);
+    background-image:
+        radial-gradient(ellipse at 15% 0%,  rgba(79,70,229,0.045) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(124,58,237,0.03) 0%, transparent 50%);
+    background-attachment: fixed;
+}
+body.dark {
+    background-image:
+        radial-gradient(ellipse at 15% 0%,  rgba(99,102,241,0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 100%, rgba(139,92,246,0.04) 0%, transparent 50%);
+}
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; -webkit-tap-highlight-color: transparent; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--primary); outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ── 3. Header ─────────────────────────────────────────────────────── */
+.header-top {
+    background: var(--bg-white);
+    border: none;
+    border-radius: 18px;
+    box-shadow: 0 1px 0 var(--border), var(--shadow);
+    padding: 10px 18px;
+}
+body.dark .header-top { background: var(--bg-white); box-shadow: 0 1px 0 var(--border), 0 4px 16px rgba(0,0,0,0.3); }
+h1 {
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.48rem; letter-spacing: -0.4px;
+}
+.subtitle { letter-spacing: 2.5px; opacity: 0.55; font-size: 0.61rem; }
+.header-btn {
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 22px; font-weight: 500; font-size: 0.79rem;
+    padding: 5px 11px; letter-spacing: -0.01em;
+    transition: all var(--transition);
+}
+.header-btn:hover {
+    background: var(--primary-soft); color: var(--primary);
+    border-color: rgba(79,70,229,0.25); transform: none; box-shadow: none;
+}
+/* Sign-in button gets gradient */
+.google-signin-btn.header-btn {
+    background: var(--grad-primary) !important; color: white !important;
+    border: none !important; box-shadow: 0 2px 8px rgba(79,70,229,0.28);
+}
+.google-signin-btn.header-btn:hover {
+    opacity: 0.9; box-shadow: 0 4px 14px rgba(79,70,229,0.38);
+    color: white !important; background: var(--grad-primary) !important; transform: none;
+}
+#syncStatus {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 10px; font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ── 4. Tabs ────────────────────────────────────────────────────────── */
+.tabs-wrapper {
+    background: var(--bg-white); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow);
+    padding: 0 4px; margin-bottom: 22px;
+}
+.tab-btn {
+    padding: 12px 13px; font-size: 0.81rem; font-weight: 500;
+    letter-spacing: -0.01em; border-bottom: 2.5px solid transparent;
+    color: var(--text-muted); transition: all var(--transition);
+    border-radius: 0;
+}
+.tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 650; }
+.tab-btn:hover:not(.active) { color: var(--text-dark); background: var(--bg); }
+
+/* ── 5. Today Dashboard ─────────────────────────────────────────────── */
+.today-dashboard { border: none; box-shadow: var(--shadow-md); border-radius: 18px; }
+.dash-header {
+    background: var(--grad-header);
+    border-radius: 18px 18px 0 0; padding: 15px 22px;
+    position: relative; overflow: hidden;
+}
+.dash-header::before {
+    content: ''; position: absolute; top: -35%; right: -8%;
+    width: 220px; height: 220px; background: rgba(255,255,255,0.07);
+    border-radius: 50%; pointer-events: none;
+}
+.dash-header::after {
+    content: ''; position: absolute; bottom: -55%; left: 25%;
+    width: 160px; height: 160px; background: rgba(255,255,255,0.04);
+    border-radius: 50%; pointer-events: none;
+}
+.dash-date-main {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.3rem; font-weight: 800; letter-spacing: -0.025em;
+}
+.dash-date-sub { font-size: 0.82rem; opacity: 0.78; font-weight: 400; }
+.dash-toggle-btn {
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 20px; font-size: 0.77rem; font-weight: 600;
+    letter-spacing: 0.02em; padding: 5px 13px; color: white;
+}
+.dash-toggle-btn:hover { background: rgba(255,255,255,0.3); transform: none; box-shadow: none; color: white; }
+.dash-top-strip { background: var(--bg); border-bottom: 1px solid var(--border); }
+.dash-main-grid { background: var(--bg-white); }
+.dash-col { padding: 15px 20px; }
+.dash-col:first-child { border-right: 1px solid var(--border); }
+.dash-col-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-light); margin-bottom: 9px; }
+.dash-score-strip {
+    padding: 9px 22px; border-top: 1px solid var(--border);
+    border-radius: 0 0 18px 18px; background: var(--bg);
+    display: flex; align-items: center; justify-content: space-between;
+}
+.dash-score-label { font-size: 0.76rem; color: var(--text-muted); font-weight: 500; }
+.dash-score-value {
+    font-size: 1.55rem; font-weight: 800;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+body.dark .dash-top-strip { background: var(--bg-light); }
+body.dark .dash-main-grid { background: var(--bg-white); }
+body.dark .dash-score-strip { background: var(--bg-light); }
+
+/* ── 6. Backup strip ────────────────────────────────────────────────── */
+.backup-strip {
+    box-shadow: var(--shadow-xs); border-radius: 12px;
+    background: var(--bg-white); border: 1px solid var(--border);
+    padding: 7px 14px; gap: 8px; margin-bottom: 14px;
+}
+.btn-backup-sm {
+    border-radius: 8px; font-size: 0.74rem; padding: 4px 10px;
+    font-weight: 600; background: var(--bg); border: 1.5px solid var(--border);
+    color: var(--text-muted); transition: all var(--transition);
+}
+.btn-backup-sm:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); transform: none; box-shadow: none; }
+
+/* ── 7. Overdue section ─────────────────────────────────────────────── */
+.overdue-section {
+    border: none; border-radius: 14px; margin-bottom: 14px; overflow: hidden;
+    box-shadow: 0 2px 10px rgba(244,63,94,0.09), 0 1px 3px rgba(0,0,0,0.04);
+}
+.overdue-header { background: linear-gradient(135deg, rgba(244,63,94,0.1) 0%, rgba(244,63,94,0.05) 100%); border-bottom: 1px solid rgba(244,63,94,0.12); }
+
+/* ── 8. Weekly sprint ───────────────────────────────────────────────── */
+.weekly-sprint { border: none; box-shadow: var(--shadow); border-radius: 16px; overflow: hidden; margin-bottom: 14px; }
+.sprint-header { background: var(--bg); border-bottom: 1px solid var(--border); padding: 11px 18px; }
+body.dark .sprint-header { background: var(--bg-light); }
+.sprint-title { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); }
+.sprint-edit-btn {
+    background: var(--bg-white); border: 1.5px solid var(--border);
+    color: var(--text-muted); border-radius: 18px; padding: 4px 12px;
+    font-size: 0.79rem; font-weight: 600; cursor: pointer; transition: all var(--transition);
+}
+.sprint-edit-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); transform: none; box-shadow: none; }
+.sprint-body { background: var(--bg-white); padding: 14px 20px; }
+body.dark .sprint-body { background: var(--bg-white); }
+.sprint-check { border-radius: 50%; border: 2px solid var(--border); background: var(--bg); width: 20px; height: 20px; font-size: 10px; }
+.sprint-item.done .sprint-check { background: var(--grad-primary); border-color: transparent; }
+
+/* ── 9. Calendar ────────────────────────────────────────────────────── */
+.controls button { border-radius: 22px; font-size: 0.85rem; padding: 7px 16px; font-weight: 500; }
+.controls button:hover { background: var(--primary-soft); border-color: rgba(79,70,229,0.28); color: var(--primary); transform: none; }
+.month-display {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.6rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text-dark);
+}
+.day {
+    border: 1px solid var(--border); border-radius: 14px;
+    background: var(--bg-white); box-shadow: var(--shadow-xs);
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.day:hover { border-color: rgba(79,70,229,0.35); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.day.today { background: rgba(79,70,229,0.04); border-color: var(--primary); box-shadow: 0 0 0 2px rgba(79,70,229,0.12), var(--shadow); }
+.day::before { border-radius: 14px 14px 0 0; height: 3px; }
+.day-number { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: -0.02em; }
+
+/* Task filter chips */
+.task-filter-chip { border-radius: 22px; font-size: 0.78rem; font-weight: 500; padding: 5px 13px; transition: all var(--transition); }
+.task-filter-chip.active { background: var(--grad-primary); border-color: transparent; color: white; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.task-filter-chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
+/* ── 10. Stat & Stats cards ─────────────────────────────────────────── */
+.stat-card {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-primary); }
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.stat-number {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.04em;
+    background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stats-card {
+    border: 1px solid var(--border); box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.stats-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-primary); }
+.stats-card-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.04em; }
+.stats-bar-fill { background: var(--grad-primary); }
+
+/* ── 11. Buttons ────────────────────────────────────────────────────── */
+.btn-primary {
+    background: var(--grad-primary); border: none;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.28); border-radius: var(--radius-sm);
+    font-weight: 600; transition: all var(--transition);
+}
+.btn-primary:hover {
+    background: var(--grad-primary); color: white;
+    transform: translateY(-1px); box-shadow: 0 5px 18px rgba(79,70,229,0.4);
+}
+.add-checklist-btn, .add-habit-btn, .add-future-btn {
+    background: var(--grad-primary); border: none;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.25);
+}
+.add-checklist-btn:hover, .add-habit-btn:hover, .add-future-btn:hover {
+    background: var(--grad-primary); opacity: 0.9;
+    transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,70,229,0.38);
+}
+.btn-today {
+    background: var(--grad-accent); border: none;
+    color: white; box-shadow: 0 2px 8px rgba(245,158,11,0.3); font-weight: 700;
+}
+.btn-today:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(245,158,11,0.4); color: white; background: var(--grad-accent); }
+.btn-migrate-today { background: var(--grad-primary); border-radius: 8px; color: white; border: none; }
+
+/* ── 12. Checklist ──────────────────────────────────────────────────── */
+.checklist-item {
+    border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow-xs);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+.checklist-item:hover { box-shadow: var(--shadow); border-color: rgba(79,70,229,0.2); transform: translateX(2px); }
+.checklist-item.completed { opacity: 0.55; background: var(--bg); }
+.checklist-item.completed .checklist-checkbox { background: var(--grad-success); border-color: transparent; }
+.filter-chip.active { background: var(--grad-primary); border-color: transparent; color: white; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.filter-chip:hover:not(.active) { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
+/* ── 13. Habits ─────────────────────────────────────────────────────── */
+.habit-grid { box-shadow: var(--shadow); border-radius: var(--radius); border: none; }
+.habit-grid-header { background: var(--grad-primary); }
+.habit-stat-bar { background: var(--grad-primary); }
+
+/* ── 14. Journal ────────────────────────────────────────────────────── */
+.journal-entry-row {
+    border: 1px solid var(--border); box-shadow: var(--shadow-xs);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+.journal-entry-row:hover { box-shadow: var(--shadow); border-color: rgba(79,70,229,0.2); transform: translateX(2px); }
+.journal-entry-row.active { border-color: var(--primary); background: var(--primary-soft); box-shadow: var(--shadow); }
+.journal-month-label, .stats-month-label, .habit-month-label { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.03em; }
+
+/* ── 15. Future Log ─────────────────────────────────────────────────── */
+.future-month-block { border: none; box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden; }
+.future-month-heading { background: var(--grad-primary); font-size: 0.9rem; font-weight: 700; padding: 13px 20px; }
+
+/* ── 16. Collections ────────────────────────────────────────────────── */
+.collection-group { border: none; box-shadow: var(--shadow); border-radius: var(--radius); overflow: hidden; }
+.collection-tag-header { background: var(--grad-primary); color: white; }
+.collection-count { background: rgba(255,255,255,0.2); color: white; }
+
+/* ── 17. Goals ──────────────────────────────────────────────────────── */
+.goal-card {
+    border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+.goal-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.goal-bar { background: var(--grad-primary); }
+.goal-card.done .goal-bar { background: var(--grad-success); }
+.goal-pct { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.goal-card.done .goal-pct { background: var(--grad-success); -webkit-background-clip: text; background-clip: text; }
+.goals-add-bar { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.goals-add-bar button { background: var(--grad-primary); box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.goals-add-bar button:hover { opacity: 0.9; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+.goal-cat-badge.cat-health   { background: rgba(16,185,129,0.1);  color: #059669; }
+.goal-cat-badge.cat-learning { background: var(--primary-soft);   color: var(--primary); }
+.goal-cat-badge.cat-finance  { background: rgba(245,158,11,0.1);  color: #b45309; }
+.goal-cat-badge.cat-personal { background: rgba(244,63,94,0.09);  color: #e11d48; }
+
+/* ── 18. Finance ────────────────────────────────────────────────────── */
+.finance-card { border: 1px solid var(--border); box-shadow: var(--shadow); transition: box-shadow var(--transition), transform var(--transition); }
+.finance-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.finance-ribbon { border: none; box-shadow: var(--shadow); border-radius: var(--radius); }
+.finance-entry { border: 1px solid var(--border); box-shadow: var(--shadow-xs); transition: box-shadow var(--transition); }
+.finance-entry:hover { box-shadow: var(--shadow); }
+.finance-add-btn { background: var(--grad-primary); box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.finance-add-btn:hover { opacity: 0.9; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+.finance-budget-bar-fill { background: var(--grad-primary); }
+
+/* ── 19. Notes ──────────────────────────────────────────────────────── */
+.note-card {
+    border: 1.5px solid var(--border); border-radius: 14px; box-shadow: var(--shadow);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+.note-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.notes-add-btn { background: var(--grad-primary); border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.notes-add-btn:hover { opacity: 0.9; box-shadow: 0 4px 14px rgba(79,70,229,0.35); }
+
+/* ── 20. Matrix & Reading list ──────────────────────────────────────── */
+.matrix-quadrant { border: 1.5px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-xs); transition: box-shadow var(--transition); }
+.matrix-quadrant:hover { box-shadow: var(--shadow); }
+.rlist-card {
+    border: 1.5px solid var(--border); box-shadow: var(--shadow-xs);
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+}
+.rlist-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.rlist-add-btn { background: var(--grad-primary); border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.rlist-status-tab.active { background: var(--grad-primary); border-color: transparent; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+
+/* ── 21. Pomodoro / Focus ───────────────────────────────────────────── */
+.pomodoro-card { border: 1px solid var(--border); box-shadow: var(--shadow); border-radius: var(--radius); }
+.pom-display {
+    font-size: 3.6rem; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: 2px;
+    background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.focus-note-wrap { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+#pomStartBtn { background: var(--grad-primary); color: white; border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+#pomStartBtn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,70,229,0.38); color: white; }
+
+/* ── 22. FAB ────────────────────────────────────────────────────────── */
+#quickCaptureBtn {
+    background: var(--grad-primary);
+    box-shadow: 0 4px 22px rgba(79,70,229,0.45), 0 2px 8px rgba(79,70,229,0.2);
+    transition: all var(--spring);
+}
+#quickCaptureBtn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 30px rgba(79,70,229,0.55), 0 4px 12px rgba(79,70,229,0.25);
+}
+
+/* ── 23. Modals ─────────────────────────────────────────────────────── */
+.modal-content  { box-shadow: var(--shadow-lg); border: none; border-radius: 22px; }
+.kb-panel       { box-shadow: var(--shadow-lg); border-radius: var(--radius); }
+.cmd-panel      { box-shadow: var(--shadow-lg); border-radius: 16px; border: 1px solid var(--border); }
+.cmd-item.active, .cmd-item:hover { background: var(--primary-soft); }
+.cmd-item-type  { background: var(--primary-soft); color: var(--primary); }
+.fab-modal      { box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
+
+/* ── 24. Toast & badges ─────────────────────────────────────────────── */
+.toast { border: none; box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06); border-radius: 14px; }
+.countdown-badge, .countdown-days-badge { background: var(--grad-primary); }
+.cat-badge { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+
+/* ── 25. Mood picker ────────────────────────────────────────────────── */
+.mood-pick-btn { border: 2px solid var(--border); box-shadow: var(--shadow-xs); border-radius: 14px; transition: all var(--spring); }
+.mood-pick-btn:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: scale(1.15) translateY(-2px); }
+.mood-pick-btn.selected { border-color: var(--primary); background: var(--primary-soft); box-shadow: 0 0 0 3px var(--primary-soft), var(--shadow); }
+
+/* ── 26. Week view ──────────────────────────────────────────────────── */
+.week-day-col { border: 1px solid var(--border); box-shadow: var(--shadow-xs); border-radius: var(--radius-sm); transition: box-shadow var(--transition); }
+.week-today { box-shadow: 0 0 0 2px var(--primary), var(--shadow) !important; background: var(--primary-soft) !important; border-color: var(--primary) !important; }
+.week-day-num { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; }
+
+/* ── 27. Search results ─────────────────────────────────────────────── */
+.search-result-item { border-radius: 12px; background: var(--bg); border: 1.5px solid transparent; transition: all var(--transition); }
+.search-result-item:hover { border-color: var(--primary); background: var(--primary-soft); transform: translateX(4px); box-shadow: var(--shadow); }
+
+/* ── 28. Key section ────────────────────────────────────────────────── */
+.key-section { box-shadow: var(--shadow-xs); border-radius: var(--radius); }
+.key-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; transition: background var(--transition), border-color var(--transition); }
+.key-item:hover { background: var(--primary-soft); border-color: rgba(79,70,229,0.2); }
+
+/* ── 29. Trackers / Body / Pixels ───────────────────────────────────── */
+.tracker-today-card { border: 1px solid var(--border); box-shadow: var(--shadow-xs); transition: box-shadow var(--transition); }
+.tracker-today-card:hover { box-shadow: var(--shadow); }
+.pixels-topbar h2, .body-topbar h2, .review-topbar h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; letter-spacing: -0.03em; }
+.pixels-day { border-radius: 4px; transition: transform var(--spring); }
+.pixels-day:hover { transform: scale(1.7); border-radius: 4px; }
+
+/* ── 30. Monthly Review ─────────────────────────────────────────────── */
+.review-question { border: 1px solid var(--border); box-shadow: var(--shadow-xs); border-radius: var(--radius); }
+.review-stat { box-shadow: var(--shadow-xs); border: 1px solid var(--border); border-radius: var(--radius); position: relative; overflow: hidden; }
+.review-stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-primary); }
+.review-stat-value { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.review-save-btn { background: var(--grad-primary); border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.review-save-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(79,70,229,0.38); }
+
+/* ── 31. Add btn (calendar) ─────────────────────────────────────────── */
+.add-btn { border: 2px dashed rgba(79,70,229,0.28); border-radius: 6px; }
+.add-btn:hover { background: var(--grad-primary); border-style: solid; border-color: transparent; transform: scale(1.1); }
+
+/* ── 32. Update banner & Onboarding ────────────────────────────────── */
+#updateBanner { background: var(--text-dark); box-shadow: var(--shadow-lg); border-radius: 28px; border: 1px solid rgba(255,255,255,0.1); }
+.onboard-card { box-shadow: var(--shadow-lg); border-radius: 22px; }
+.onboard-btn-next { background: var(--grad-primary); box-shadow: 0 2px 10px rgba(79,70,229,0.3); border-radius: 12px; }
+.onboard-btn-next:hover { opacity: 0.9; box-shadow: 0 4px 18px rgba(79,70,229,0.42); }
+
+/* ── 33. Input focus states ─────────────────────────────────────────── */
+input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus,
+select:focus, textarea:focus,
+.checklist-input:focus, .habit-input:focus, .journal-editor:focus,
+.future-input:focus, .collections-search:focus,
+.notes-topbar input:focus, .search-input-big:focus,
+.finance-input:focus, .review-textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+}
+
+/* ── 34. Notification modal ─────────────────────────────────────────── */
+.notif-modal { box-shadow: var(--shadow-lg); border-radius: 20px; }
+.notif-save-btn { background: var(--grad-primary); }
+input:checked + .notif-slider { background: var(--primary); }
+
+/* ── 35. Body / Body Metrics ────────────────────────────────────────── */
+.body-chart-wrap { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.body-entries { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.body-save-btn { background: var(--grad-primary); border: none; box-shadow: 0 2px 8px rgba(79,70,229,0.25); }
+.body-save-btn:hover { opacity: 0.9; background: var(--grad-primary); }
+
+/* ── 36. Finance recurring ──────────────────────────────────────────── */
+.fin-rec-section { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.fin-rec-add-row button { background: var(--grad-primary); border: none; }
+
+/* ── 37. Sprint done checkbox ───────────────────────────────────────── */
+.sprint-item.done .sprint-check { background: var(--grad-primary); border-color: transparent; }
+
+/* ── 38. Habit pop animation (keep) ────────────────────────────────── */
+@keyframes habitPop { 0%{transform:scale(1);} 40%{transform:scale(1.5);} 70%{transform:scale(0.9);} 100%{transform:scale(1);} }
+
+/* ── 39. Misc polish ────────────────────────────────────────────────── */
+.corr-card { box-shadow: var(--shadow-xs); border: 1px solid var(--border); border-radius: 12px; }
+.corr-bar { background: var(--grad-primary); }
+.future-add-bar { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.countdown-add-bar { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.tracker-setup-bar { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.tracker-list-row { border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.journal-new-btn { border-radius: var(--radius-sm); font-weight: 600; }
+.journal-new-btn:hover { background: var(--grad-primary); color: white; border-color: transparent; transform: none; }
+.lang-btn { border-radius: 20px; font-weight: 500; }
+.lang-dropdown { border-radius: 12px; box-shadow: var(--shadow-md); }
+.user-info-chip { border-radius: 22px; background: var(--primary-soft); border: 1px solid rgba(79,70,229,0.15); }
+
 </style>
 </head>
 <body>
@@ -6315,7 +6814,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script>
 if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
-        navigator.serviceWorker.register('./sw.js?v=202605281800')
+        navigator.serviceWorker.register('./sw.js?v=202605282300')
             .then(function(reg){
                 reg.update();
                 reg.addEventListener('updatefound', function(){
