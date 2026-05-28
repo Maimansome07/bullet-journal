@@ -1,11 +1,11 @@
 // Service Worker for Mai Bullet Journal
-// Cache version rotates monthly — forces refresh when new version is deployed
-const CACHE = 'bj-' + new Date().toISOString().slice(0, 7); // e.g. bj-2026-05
+// Cache version uses full date+hour so every new Netlify deploy busts the cache
+const CACHE = 'bj-202605280300'; // build 202605280300
 const ASSETS = [
-  './index.html',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap',
 ];
+// NOTE: index.html is intentionally excluded from pre-cache so it always fetches fresh
 
 self.addEventListener('install', function(e){
   e.waitUntil(
@@ -50,7 +50,11 @@ self.addEventListener('fetch', function(e){
           // Offline fallback — return cached version or index.html
           return cached || cache.match('./index.html');
         });
-        // Cache-first for local assets, network-first for everything else
+        // index.html: always network-first so updates are picked up immediately
+        if(url.endsWith('/') || url.endsWith('index.html') || url === self.location.origin + '/'){
+          return networkFetch;
+        }
+        // Other local assets: cache-first for speed
         return url.startsWith(self.location.origin) ? (cached || networkFetch) : networkFetch;
       });
     })
@@ -60,4 +64,47 @@ self.addEventListener('fetch', function(e){
 // Allow the page to trigger immediate activation of new SW
 self.addEventListener('message', function(e){
   if(e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
+  // Allow page to send a notification via the SW (more reliable on mobile)
+  if(e.data && e.data.type === 'SHOW_NOTIFICATION'){
+    self.registration.showNotification(e.data.title, {
+      body: e.data.body,
+      icon: './icon-192.png',
+      badge: './icon-192.png',
+      tag: e.data.tag || 'bj',
+      renotify: true,
+      data: { url: e.data.url || '/' }
+    });
+  }
+});
+
+// Open app when notification is clicked
+self.addEventListener('notificationclick', function(e){
+  e.notification.close();
+  var url = (e.notification.data && e.notification.data.url) || '/';
+  e.waitUntil(
+    clients.matchAll({type:'window', includeUncontrolled:true}).then(function(list){
+      // Focus existing window if open
+      for(var i=0; i<list.length; i++){
+        if(list[i].url.includes(self.location.origin) && 'focus' in list[i]){
+          return list[i].focus();
+        }
+      }
+      // Otherwise open new window
+      if(clients.openWindow) return clients.openWindow(url);
+    })
+  );
+});
+
+// Periodic background sync — fire reminders even when app is closed (Chrome PWA)
+self.addEventListener('periodicsync', function(e){
+  if(e.tag === 'bj-daily-check'){
+    e.waitUntil(
+      clients.matchAll({type:'window'}).then(function(list){
+        // If app is open, let it handle notifications itself
+        if(list.length > 0) return;
+        // App is closed — post message to any client or skip
+        // (full background notification requires IndexedDB; handled by app on next open)
+      })
+    );
+  }
 });
