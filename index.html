@@ -443,80 +443,10 @@ textarea { resize: vertical; min-height: 80px; }
 
 /* Phone — full overhaul */
 
-/* ── Kanban Board ── */
-.kanban-container { max-width:1100px; margin:0 auto; padding:10px 0; }
-.kanban-topbar { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
-.kanban-topbar h2 { font-size:1.3rem; font-weight:700; margin:0; flex:1; }
-.kanban-board { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start; }
-@media(max-width:700px){ .kanban-board { grid-template-columns:1fr; } }
-.kanban-col { background:var(--bg-light); border-radius:var(--radius); padding:10px; min-height:200px; }
-.kanban-col-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
-.kanban-col-title { font-size:0.88rem; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
-.kanban-col-count { font-size:0.75rem; color:var(--text-muted); background:var(--bg-white); border-radius:10px; padding:2px 8px; border:1px solid var(--border); }
-.kanban-card { background:var(--bg-white); border-radius:10px; padding:10px 12px; margin-bottom:8px; box-shadow:0 1px 4px rgba(0,0,0,.06); border:1px solid var(--border); cursor:grab; transition:box-shadow .15s, transform .15s; position:relative; }
-.kanban-card:hover { box-shadow:0 4px 14px rgba(0,0,0,.1); transform:translateY(-2px); }
-.kanban-card.dragging { opacity:.4; cursor:grabbing; }
-.kanban-col.drag-over { background:rgba(83,102,241,.08); border:2px dashed var(--primary); }
-.kanban-card-title { font-size:0.88rem; font-weight:600; color:var(--text-dark); margin-bottom:4px; word-break:break-word; }
-.kanban-card-meta { font-size:0.72rem; color:var(--text-muted); display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
-.kanban-pri-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.kanban-pri-high { background:#ff4757; }
-.kanban-pri-normal { background:#a4b0be; }
-.kanban-pri-low { background:#2ed573; }
-.kanban-date-badge { font-size:0.68rem; padding:1px 5px; border-radius:4px; background:var(--bg-light); border:1px solid var(--border); }
-.kanban-date-badge.overdue { background:#fff0f0; color:#c0392b; border-color:#f5a5a5; }
-.kanban-empty { text-align:center; color:var(--text-muted); font-size:0.82rem; padding:24px 0; }
-.kanban-tag { font-size:0.65rem; padding:1px 5px; border-radius:4px; background:rgba(83,102,241,.1); color:var(--primary); }
-
-
 /* ── Update banner ── */
 #updateBanner { display:none; position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:#5366f1; color:white; padding:10px 20px; border-radius:20px; font-size:0.9rem; font-weight:600; z-index:9999; box-shadow:0 4px 20px rgba(83,102,241,.4); gap:12px; align-items:center; white-space:nowrap; }
 #updateBanner.show { display:flex; }
 #updateBanner button { background:white; color:#5366f1; border:none; border-radius:12px; padding:4px 12px; font-weight:700; cursor:pointer; font-size:0.85rem; }
-
-/* ── Daily Planner ── */
-.btn-nav { width:34px; height:34px; border-radius:50%; border:1.5px solid var(--border); background:var(--bg-white); color:var(--text-dark); font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; line-height:1; transition:all .2s; box-shadow:none; }
-.btn-nav:hover { background:var(--primary); color:white; border-color:var(--primary); transform:none; }
-.planner-container { max-width:800px; margin:0 auto; padding:10px 0; }
-.planner-date-nav { display:flex; align-items:center; justify-content:center; gap:16px; margin-bottom:20px; }
-.planner-date-label { font-size:1.2rem; font-weight:700; color:var(--text-dark); min-width:200px; text-align:center; }
-.planner-section { background:var(--bg-white); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 20px; margin-bottom:16px; }
-.planner-section-title { font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:12px; }
-.mit-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
-.mit-num { width:24px; height:24px; border-radius:50%; background:var(--primary); color:white; font-size:0.75rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.mit-input { flex:1; padding:7px 10px; border:1.5px solid var(--border); border-radius:8px; font-family:'Fredoka',sans-serif; font-size:0.92rem; background:var(--bg-white); color:var(--text-dark); transition:border-color .2s; }
-.mit-input:focus { border-color:var(--primary); outline:none; }
-.mit-cb { width:18px; height:18px; accent-color:var(--primary); cursor:pointer; flex-shrink:0; }
-.planner-intention { width:100%; padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-family:'Fredoka',sans-serif; font-size:0.92rem; background:var(--bg-white); color:var(--text-dark); resize:none; transition:border-color .2s; }
-.planner-intention:focus { border-color:var(--primary); outline:none; }
-.timeblock-grid { display:grid; grid-template-columns:54px 1fr; gap:1px; background:var(--border); border-radius:8px; overflow:hidden; }
-.tb-time { background:var(--bg-light); padding:6px 8px; font-size:0.72rem; color:var(--text-muted); font-weight:600; display:flex; align-items:center; justify-content:flex-end; }
-.tb-cell { background:var(--bg-white); padding:4px 8px; min-height:36px; border:none; width:100%; font-family:'Fredoka',sans-serif; font-size:0.85rem; color:var(--text-dark); resize:none; outline:none; transition:background .15s; }
-.tb-cell:focus { background:rgba(83,102,241,.04); }
-.planner-save-btn { margin-top:14px; width:100%; padding:10px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-family:'Fredoka',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; transition:opacity .2s; }
-.planner-save-btn:hover { opacity:.88; transform:none; }
-
-/* ── Wheel of Life ── */
-.wheel-container { max-width:780px; margin:0 auto; padding:10px 0; }
-.wheel-topbar { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
-.wheel-topbar h2 { font-size:1.3rem; font-weight:700; margin:0; flex:1; }
-.wheel-layout { display:grid; grid-template-columns:320px 1fr; gap:24px; align-items:start; }
-@media(max-width:720px){ .wheel-layout { grid-template-columns:1fr; } }
-.wheel-canvas-wrap { display:flex; justify-content:center; }
-.wheel-sliders { background:var(--bg-white); border-radius:var(--radius); box-shadow:var(--shadow); padding:16px 18px; }
-.wheel-area-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-.wheel-area-label { font-size:0.82rem; font-weight:600; width:88px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.wheel-slider { flex:1; accent-color:var(--primary); }
-.wheel-val { font-size:0.82rem; font-weight:700; width:18px; text-align:right; color:var(--primary); }
-.wheel-save-btn { margin-top:14px; width:100%; padding:9px; background:var(--primary); color:white; border:none; border-radius:var(--radius); font-family:'Fredoka',sans-serif; font-size:0.95rem; font-weight:700; cursor:pointer; transition:opacity .2s; }
-.wheel-save-btn:hover { opacity:.88; transform:none; }
-.wheel-history { margin-top:20px; background:var(--bg-white); border-radius:var(--radius); box-shadow:var(--shadow); padding:14px 18px; }
-.wheel-history-title { font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:10px; }
-.wheel-history-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid var(--border); font-size:0.8rem; color:var(--text-muted); }
-.wheel-history-date { width:80px; flex-shrink:0; font-weight:600; }
-.wheel-history-bar-wrap { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
-.wheel-history-bar { height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); border-radius:3px; transition:width .4s; }
-.wheel-history-score { width:32px; text-align:right; font-weight:700; color:var(--primary); }
 
 @media (max-width: 600px) {
 
@@ -1421,9 +1351,6 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
     <button class="tab-btn" onclick="switchTab('matrix',this)">⚡ <span data-i18n="tab_matrix">Matrix</span></button>
     <button class="tab-btn" onclick="switchTab('readinglist',this)">📚 <span data-i18n="tab_readinglist">Lists</span></button>
     <button class="tab-btn" onclick="switchTab('trackers',this)">📈 <span data-i18n="tab_trackers">Trackers</span></button>
-    <button class="tab-btn" onclick="switchTab('kanban',this)">📋 <span data-i18n="tab_kanban">Kanban</span></button>
-    <button class="tab-btn" onclick="switchTab('planner',this)">📅 <span data-i18n="tab_planner">Planner</span></button>
-    <button class="tab-btn" onclick="switchTab('wheel_life',this)">🎡 <span data-i18n="tab_wheel">Wheel of Life</span></button>
   </div>
   </div>
 
@@ -1958,8 +1885,6 @@ var customTrackers = [];   // [{id,name,unit,goal,color}]
 var trackerLog = {};       // {dateKey:{trackerId:value}}
 var readingList = [];      // [{id,title,type,status,author,rating,note,addedAt}]
 var matrixData = {};       // {taskId: quadrant (1-4)}
-var plannerData = {};  // {dateKey:{mits,intention,blocks}}
-var wheelData = {};    // {dateKey:[v1..v8]}
 var activeFilter = '', habitCurrentDate = new Date();
 var journalCurrentDate = new Date(), statsCurrentDate = new Date();
 var pendingFutureEntry = null, moodModalDay = null, journalModalDay = null;
@@ -2001,8 +1926,6 @@ function loadData(){
         trackerLog       = JSON.parse(ls("bj_trackerLog")    ||"{}");
         readingList      = JSON.parse(ls("bj_readingList")   ||"[]");
         matrixData       = JSON.parse(ls("bj_matrixData")    ||"{}");
-        plannerData      = JSON.parse(ls("bj_planner")       ||"{}");
-        wheelData        = JSON.parse(ls("bj_wheel")          ||"{}");
         financeBudgets   = JSON.parse(ls("bj_finBudgets")  ||"{}");
         finRecurring     = JSON.parse(ls("bj_finRecurring")||"[]");
         goals            = JSON.parse(ls("bj_goals")       ||"[]");
@@ -2035,8 +1958,6 @@ function saveData(){
     localStorage.setItem("bj_trackerLog",   JSON.stringify(trackerLog));
     localStorage.setItem("bj_readingList",  JSON.stringify(readingList));
     localStorage.setItem("bj_matrixData",   JSON.stringify(matrixData));
-    localStorage.setItem("bj_planner",      JSON.stringify(plannerData));
-    localStorage.setItem("bj_wheel",         JSON.stringify(wheelData));
     localStorage.setItem("bj_finBudgets",   JSON.stringify(financeBudgets));
     localStorage.setItem("bj_finRecurring", JSON.stringify(finRecurring));
     localStorage.setItem("bj_goals",        JSON.stringify(goals));
@@ -2050,7 +1971,7 @@ function saveData(){
                 countdowns:countdowns, recurringTasks:recurringTasks,
                 weekIntentions:weekIntentions, reflections:reflections,
                 sleepLog:sleepLog, waterLog:waterLog,
-                financeLog:financeLog, financeBudgets:financeBudgets, finRecurring:finRecurring, goals:goals, habitArchive:habitArchive, notes:notes, gratitudeLog:gratitudeLog, customTrackers:customTrackers, trackerLog:trackerLog, readingList:readingList, matrixData:matrixData, plannerData:plannerData, wheelData:wheelData
+                financeLog:financeLog, financeBudgets:financeBudgets, finRecurring:finRecurring, goals:goals, habitArchive:habitArchive, notes:notes, gratitudeLog:gratitudeLog, customTrackers:customTrackers, trackerLog:trackerLog, readingList:readingList, matrixData:matrixData
             });
         }
     }, 1500);
@@ -2078,8 +1999,6 @@ function applyFirebaseData(d){
     if(d.trackerLog)      trackerLog      = d.trackerLog      || {};
     if(d.readingList)     readingList     = d.readingList     || [];
     if(d.matrixData)      matrixData      = d.matrixData      || {};
-    if(d.plannerData)     plannerData     = d.plannerData     || {};
-    if(d.wheelData)       wheelData       = d.wheelData       || {};
     if(d.financeBudgets)  financeBudgets  = d.financeBudgets  || {};
     // Cache in localStorage
     localStorage.setItem("bj_tasks",     JSON.stringify(tasks));
@@ -2177,9 +2096,6 @@ function switchTab(tab, btn){
     if(tab==="matrix")      renderMatrix();
     if(tab==="readinglist") renderReadingList();
     if(tab==="trackers")    renderTrackers();
-    if(tab==="kanban")      renderKanban();
-    if(tab==="planner")     renderPlanner();
-    if(tab==="wheel_life")  setTimeout(renderWheel, 50);
 }
 
 // DATE HELPERS
@@ -3775,291 +3691,8 @@ function renderTrackers(){
 // ═══════════════════════════════════════════════════
 //  KANBAN BOARD
 // ═══════════════════════════════════════════════════
-var _kanbanDragId = null;
-var _kanbanDragDate = null;
-
-function renderKanban(){
-    if(!document.getElementById("kanbanBoard")) return;
-    var cols = {pending:[], active:[], completed:[]};
-    Object.keys(tasks).forEach(function(dk){
-        (tasks[dk]||[]).forEach(function(t,i){
-            var obj = {task:t, dk:dk, idx:i};
-            if(t.status==="completed") cols.completed.push(obj);
-            else if(t.status==="active") cols.active.push(obj);
-            else cols.pending.push(obj);
-        });
-    });
-    var defs = [
-        {key:"pending",   label:t("kanban_todo"),   cls:""},
-        {key:"active",    label:t("kanban_doing"),  cls:""},
-        {key:"completed", label:t("kanban_done"),   cls:""}
-    ];
-    var board = document.getElementById("kanbanBoard"); if(!board) return;
-    board.innerHTML = defs.map(function(d){
-        var items = cols[d.key];
-        var cards = items.length===0
-            ? '<div class="kanban-empty">'+t("kanban_empty")+'</div>'
-            : items.map(function(obj){
-                var task=obj.task, dk=obj.dk;
-                var priCls = task.priority==="high"?"kanban-pri-high":task.priority==="low"?"kanban-pri-low":"kanban-pri-normal";
-                var dueBadge="", today2=getDateKey(new Date());
-                if(task.dueDate){
-                    var isOvd = task.dueDate < today2 && task.status!=="completed";
-                    dueBadge='<span class="kanban-date-badge'+(isOvd?" overdue":"")+'">'+task.dueDate.slice(5)+'</span>';
-                }
-                var tags=(task.tags||[]).map(function(tg){return '<span class="kanban-tag">#'+escHtml(tg)+'</span>';}).join("");
-                return '<div class="kanban-card" draggable="true" data-id="'+task.id+'" data-dk="'+dk+'" '
-                    +'ondragstart="kanbanDragStart(event)" ondragend="kanbanDragEnd(event)">'
-                    +'<div class="kanban-card-title">'+escHtml(task.title)+'</div>'
-                    +'<div class="kanban-card-meta">'
-                    +'<span class="kanban-pri-dot '+priCls+'"></span>'
-                    +'<span>'+dk.slice(5)+'</span>'
-                    +dueBadge+tags
-                    +'</div>'
-                    +'</div>';
-            }).join("");
-        return '<div class="kanban-col" id="kancol-'+d.key+'" data-col="'+d.key+'" '
-            +'ondragover="kanbanDragOver(event,this.dataset.col)" '
-            +'ondragleave="kanbanDragLeave(event)" '
-            +'ondrop="kanbanDrop(event,this.dataset.col)">'
-            +'<div class="kanban-col-header">'
-            +'<span class="kanban-col-title">'+d.label+'</span>'
-            +'<span class="kanban-col-count">'+items.length+'</span>'
-            +'</div>'
-            +cards+'</div>';
-    }).join("");
-}
-function kanbanDragStart(e){
-    _kanbanDragId = parseInt(e.currentTarget.dataset.id);
-    _kanbanDragDate = e.currentTarget.dataset.dk;
-    e.currentTarget.classList.add("dragging");
-    e.dataTransfer.effectAllowed="move";
-}
-function kanbanDragEnd(e){ e.currentTarget.classList.remove("dragging"); }
-function kanbanDragOver(e,col){ e.preventDefault(); document.getElementById("kancol-"+col).classList.add("drag-over"); }
-function kanbanDragLeave(e){ e.currentTarget.classList.remove("drag-over"); }
-function kanbanDrop(e,newStatus){
-    e.preventDefault();
-    document.getElementById("kancol-"+newStatus).classList.remove("drag-over");
-    if(!_kanbanDragId||!_kanbanDragDate) return;
-    var arr = tasks[_kanbanDragDate]||[];
-    var task = arr.find(function(t){return t.id===_kanbanDragId;});
-    if(!task) return;
-    task.status = newStatus==="completed" ? "completed" : newStatus==="active" ? "active" : "pending";
-    saveData(); renderKanban(); renderCalendar();
-    _kanbanDragId=null; _kanbanDragDate=null;
-}
-
-
-// ═══════════════════════════════════════════════════
-//  DAILY PLANNER
-// ═══════════════════════════════════════════════════
-var plannerData = {};   // {dateKey: {mits:[{text,done}x3], intention:'', blocks:{hour:text}}}
-var plannerDate = new Date();
-
-function loadPlannerData(){
-    try { plannerData = JSON.parse(localStorage.getItem("bj_planner")||"{}"); } catch(e){ plannerData={}; }
-}
-function savePlannerData(){ saveData(); }
-function savePlannerToFB(){ /* handled by saveData() */ }
-function renderPlanner(){
-    if(!document.getElementById("plannerDateLabel")) return;
-    var key = getDateKey(plannerDate);
-    var entry = plannerData[key]||{mits:[{text:"",done:false},{text:"",done:false},{text:"",done:false}],intention:"",blocks:{}};
-    // date label
-    var dl = document.getElementById("plannerDateLabel");
-    if(dl) dl.textContent = plannerDate.toLocaleDateString(currentLang==="zh"?"zh-CN":currentLang==="th"?"th-TH":"en-US",{weekday:"long",month:"long",day:"numeric"});
-    // MITs
-    for(var i=0;i<3;i++){
-        var inp = document.getElementById("mit"+i);
-        var cb  = document.getElementById("mitcb"+i);
-        if(inp){ inp.value=entry.mits[i]?entry.mits[i].text||"":""; }
-        if(cb){  cb.checked=entry.mits[i]?entry.mits[i].done||false:false; }
-    }
-    // intention
-    var intEl = document.getElementById("plannerIntention");
-    if(intEl) intEl.value = entry.intention||"";
-    // time blocks 6am–10pm
-    var grid = document.getElementById("timeblockGrid"); if(!grid) return;
-    var html="";
-    for(var h=6;h<=22;h++){
-        var label=(h>12?h-12:h)+":00"+(h>=12?" PM":" AM");
-        var val=escHtml((entry.blocks||{})[h]||"");
-        html+='<div class="tb-time">'+label+'</div>'
-            +'<textarea class="tb-cell" rows="1" id="tbh'+h+'" oninput="autoResizeTb(this)">'+val+'</textarea>';
-    }
-    grid.innerHTML=html;
-    grid.querySelectorAll(".tb-cell").forEach(autoResizeTb);
-}
-function autoResizeTb(el){ el.style.height="auto"; el.style.height=(el.scrollHeight)+"px"; }
-function savePlanner(){
-    var key = getDateKey(plannerDate);
-    var mits=[];
-    for(var i=0;i<3;i++){
-        var inp=document.getElementById("mit"+i), cb=document.getElementById("mitcb"+i);
-        mits.push({text:inp?inp.value:"", done:cb?cb.checked:false});
-    }
-    var blocks={};
-    for(var h=6;h<=22;h++){
-        var el=document.getElementById("tbh"+h);
-        if(el&&el.value.trim()) blocks[h]=el.value.trim();
-    }
-    var intEl=document.getElementById("plannerIntention");
-    plannerData[key]={mits:mits, intention:intEl?intEl.value:"", blocks:blocks};
-    saveData();
-    showToast(t("planner_saved"),"📅",2000);
-}
-function plannerPrev(){ plannerDate.setDate(plannerDate.getDate()-1); renderPlanner(); }
-function plannerNext(){ plannerDate.setDate(plannerDate.getDate()+1); renderPlanner(); }
-function plannerToday(){ plannerDate=new Date(); renderPlanner(); }
-
-
-// ═══════════════════════════════════════════════════
-//  WHEEL OF LIFE
-// ═══════════════════════════════════════════════════
-var wheelData = {};   // {dateKey: [v1..v8]}
-var WHEEL_AREAS_EN = ["Health","Career","Finance","Family","Friends","Growth","Fun","Environment"];
-var WHEEL_AREAS_ZH = ["健康","职业","财务","家庭","朋友","成长","娱乐","环境"];
-var WHEEL_AREAS_TH = ["สุขภาพ","อาชีพ","การเงิน","ครอบครัว","เพื่อน","การเติบโต","ความสนุก","สภาพแวดล้อม"];
-var WHEEL_COLORS = ["#5366f1","#f4a261","#2ed573","#ff6b9d","#a29bfe","#fdcb6e","#55efc4","#74b9ff"];
-
-function wheelAreas(){
-    if(currentLang==="zh") return WHEEL_AREAS_ZH;
-    if(currentLang==="th") return WHEEL_AREAS_TH;
-    return WHEEL_AREAS_EN;
-}
-function loadWheelData(){
-    try { wheelData = JSON.parse(localStorage.getItem("bj_wheel")||"{}"); } catch(e){ wheelData={}; }
-}
-function saveWheelToDisk(){ saveData(); }
-function saveWheelToFB(){ /* handled by saveData() */ }
-function renderWheel(){
-    if(!document.getElementById("wheel_life")) return;
-    var areas=wheelAreas();
-    var key=getDateKey(new Date());
-    var vals=wheelData[key]||[5,5,5,5,5,5,5,5];
-    // sliders
-    var sliders=document.getElementById("wheelSliders"); if(!sliders) return;
-    sliders.innerHTML=areas.map(function(a,i){
-        return '<div class="wheel-area-row">'
-            +'<span class="wheel-area-label" style="color:'+WHEEL_COLORS[i]+'">'+a+'</span>'
-            +'<input type="range" class="wheel-slider" min="1" max="10" value="'+vals[i]+'" id="wslider'+i+'" oninput="wheelSliderChange('+i+',this.value)">'
-            +'<span class="wheel-val" id="wval'+i+'">'+vals[i]+'</span>'
-            +'</div>';
-    }).join("");
-    drawWheelChart(vals, areas);
-    renderWheelHistory(areas);
-}
-function wheelSliderChange(i,v){
-    document.getElementById("wval"+i).textContent=v;
-    var areas=wheelAreas();
-    var vals=[];
-    for(var j=0;j<8;j++){
-        var el=document.getElementById("wslider"+j);
-        vals.push(el?parseInt(el.value):5);
-    }
-    drawWheelChart(vals, areas);
-}
-function saveWheel(){
-    var key=getDateKey(new Date());
-    var vals=[];
-    for(var i=0;i<8;i++){
-        var el=document.getElementById("wslider"+i);
-        vals.push(el?parseInt(el.value):5);
-    }
-    wheelData[key]=vals;
-    saveData();
-    renderWheelHistory(wheelAreas());
-    showToast(t("wheel_saved"),"🎡",2000);
-}
-function drawWheelChart(vals, areas){
-    var canvas=document.getElementById("wheelCanvas"); if(!canvas) return;
-    var ctx=canvas.getContext("2d");
-    // Use larger canvas so labels don't clip
-    var W=canvas.width=380, H=canvas.height=380;
-    var cx=W/2, cy=H/2, R=110, n=8;
-    ctx.clearRect(0,0,W,H);
-    var isDark=document.body.classList.contains("dark");
-    // spider web rings
-    ctx.lineWidth=1;
-    for(var ring=2;ring<=10;ring+=2){
-        ctx.strokeStyle=isDark?"rgba(255,255,255,.15)":"rgba(0,0,0,.1)";
-        ctx.beginPath();
-        for(var j=0;j<n;j++){
-            var ang=j*2*Math.PI/n - Math.PI/2;
-            var r=R*ring/10;
-            j===0 ? ctx.moveTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang))
-                  : ctx.lineTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang));
-        }
-        ctx.closePath(); ctx.stroke();
-    }
-    // axes
-    ctx.strokeStyle=isDark?"rgba(255,255,255,.12)":"rgba(0,0,0,.08)";
-    for(var j=0;j<n;j++){
-        var ang=j*2*Math.PI/n - Math.PI/2;
-        ctx.beginPath();
-        ctx.moveTo(cx,cy);
-        ctx.lineTo(cx+R*Math.cos(ang),cy+R*Math.sin(ang));
-        ctx.stroke();
-    }
-    // filled polygon
-    ctx.beginPath();
-    for(var j=0;j<n;j++){
-        var ang=j*2*Math.PI/n - Math.PI/2;
-        var r=R*Math.max(0.05,Math.min(10,vals[j]))/10;
-        j===0 ? ctx.moveTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang))
-              : ctx.lineTo(cx+r*Math.cos(ang),cy+r*Math.sin(ang));
-    }
-    ctx.closePath();
-    ctx.fillStyle="rgba(83,102,241,.20)";
-    ctx.fill();
-    ctx.strokeStyle="#5366f1";
-    ctx.lineWidth=2.5;
-    ctx.stroke();
-    // dots + value labels + area labels
-    for(var j=0;j<n;j++){
-        var ang=j*2*Math.PI/n - Math.PI/2;
-        var vn=Math.max(0,Math.min(10,vals[j]));
-        var r=R*Math.max(0.05,vn)/10;
-        var px=cx+r*Math.cos(ang), py=cy+r*Math.sin(ang);
-        // value dot
-        ctx.beginPath();
-        ctx.arc(px,py,5,0,2*Math.PI);
-        ctx.fillStyle=WHEEL_COLORS[j]; ctx.fill();
-        ctx.strokeStyle="white"; ctx.lineWidth=1.5;
-        ctx.stroke();
-        // area label — push further out so it never clips
-        var lr=R+32;
-        var lx=cx+lr*Math.cos(ang), ly=cy+lr*Math.sin(ang);
-        ctx.font="600 11px sans-serif";
-        ctx.fillStyle=isDark?"#d0d0d0":"#444";
-        ctx.textAlign="center"; ctx.textBaseline="middle";
-        ctx.fillText(areas[j], lx, ly);
-        // value number near dot
-        ctx.font="700 9px sans-serif";
-        ctx.fillStyle=WHEEL_COLORS[j];
-        var vr=r-16; if(vr<10) vr=r+14;
-        ctx.fillText(vn, cx+vr*Math.cos(ang), cy+vr*Math.sin(ang));
-    }
-}
-function renderWheelHistory(areas){
-    var hist=document.getElementById("wheelHistory"); if(!hist) return;
-    var keys=Object.keys(wheelData).sort().reverse().slice(0,6);
-    if(keys.length===0){ hist.innerHTML=""; return; }
-    hist.innerHTML='<div class="wheel-history-title">'+t("wheel_history")+'</div>'
-        +keys.map(function(k){
-            var vals=wheelData[k];
-            var avg=vals.reduce(function(a,b){return a+b;},0)/vals.length;
-            return '<div class="wheel-history-row">'
-                +'<span class="wheel-history-date">'+k.slice(5)+'</span>'
-                +'<div class="wheel-history-bar-wrap"><div class="wheel-history-bar" style="width:'+(avg/10*100).toFixed(0)+'%"></div></div>'
-                +'<span class="wheel-history-score">'+avg.toFixed(1)+'</span>'
-                +'</div>';
-        }).join("");
-}
 
 renderCalendar(); renderChecklist(); renderDashboard(); renderCountdowns(); renderSprint(); renderOverdue(); loadThemeColor(); renderTagFilters();
-// plannerData and wheelData loaded by loadData()
 </script>
 
 <!-- FAB Quick Capture -->
@@ -5199,16 +4832,6 @@ var TRANSLATIONS = {
     backup_drive:"☁️ Drive Backup",
     // Tags
     tags_label:"#Tags:",
-    // Kanban
-    tab_kanban:"Kanban", kanban_todo:"To Do", kanban_doing:"In Progress", kanban_done:"Done",
-    kanban_empty:"Drop tasks here",
-    // Daily Planner
-    tab_planner:"Planner", planner_mits:"🎯 Most Important Tasks",
-    planner_intention:"✨ Today's Intention", planner_intention_ph:"My focus for today is…",
-    planner_timeblocks:"🕐 Time Blocks", planner_saved:"Planner saved",
-    mit_ph:"Most important task…",
-    // Wheel of Life
-    tab_wheel:"Wheel of Life", wheel_saved:"Saved!", wheel_history:"Recent entries",
   },
   zh: {
     // Header
@@ -5280,16 +4903,6 @@ var TRANSLATIONS = {
     backup_drive:"☁️ 云端备份",
     // Tags
     tags_label:"#标签：",
-    // Kanban
-    tab_kanban:"看板", kanban_todo:"待办", kanban_doing:"进行中", kanban_done:"已完成",
-    kanban_empty:"拖拽任务到这里",
-    // Daily Planner
-    tab_planner:"日计划", planner_mits:"🎯 最重要的任务",
-    planner_intention:"✨ 今日意图", planner_intention_ph:"今天我的专注点是…",
-    planner_timeblocks:"🕐 时间块", planner_saved:"计划已保存",
-    mit_ph:"最重要的任务…",
-    // Wheel of Life
-    tab_wheel:"生命之轮", wheel_saved:"已保存！", wheel_history:"历史记录",
   },
   th: {
     // Header
@@ -5361,16 +4974,6 @@ var TRANSLATIONS = {
     backup_drive:"☁️ สำรองไฟล์",
     // Tags
     tags_label:"#แท็ก:",
-    // Kanban
-    tab_kanban:"คัมบัง", kanban_todo:"ต้องทำ", kanban_doing:"กำลังทำ", kanban_done:"เสร็จแล้ว",
-    kanban_empty:"ลากงานมาวางที่นี่",
-    // Daily Planner
-    tab_planner:"แผนรายวัน", planner_mits:"🎯 งานสำคัญที่สุด",
-    planner_intention:"✨ เจตนาวันนี้", planner_intention_ph:"วันนี้ฉันจะโฟกัสที่…",
-    planner_timeblocks:"🕐 บล็อกเวลา", planner_saved:"บันทึกแล้ว",
-    mit_ph:"งานสำคัญที่สุด…",
-    // Wheel of Life
-    tab_wheel:"วงล้อชีวิต", wheel_saved:"บันทึกแล้ว!", wheel_history:"บันทึกล่าสุด",
   }
 };
 
@@ -6865,64 +6468,6 @@ onAuthStateChanged(auth, async (user) => {
     <div id="trackerChartSection"></div>
   </div>
 </div>
-
-
-<!-- ══ KANBAN BOARD ══ -->
-<div id="kanban" class="page">
-  <div class="kanban-container">
-    <div class="kanban-topbar">
-      <h2>📋 <span data-i18n="tab_kanban">Kanban</span></h2>
-    </div>
-    <div class="kanban-board" id="kanbanBoard"></div>
-  </div>
-</div>
-
-
-<!-- ══ DAILY PLANNER ══ -->
-<div id="planner" class="page">
-  <div class="planner-container">
-    <div class="planner-date-nav">
-      <button class="btn-nav" onclick="plannerPrev()">‹</button>
-      <span class="planner-date-label" id="plannerDateLabel"></span>
-      <button class="btn-nav" onclick="plannerNext()">›</button>
-      <button class="btn-today" onclick="plannerToday()" data-i18n="btn_today">Today</button>
-    </div>
-    <div class="planner-section">
-      <div class="planner-section-title" data-i18n="planner_mits">🎯 Most Important Tasks</div>
-      <div class="mit-row"><span class="mit-num">1</span><input type="checkbox" class="mit-cb" id="mitcb0"><input type="text" class="mit-input" id="mit0" placeholder="Most important task…" data-i18n-ph="mit_ph"></div>
-      <div class="mit-row"><span class="mit-num">2</span><input type="checkbox" class="mit-cb" id="mitcb1"><input type="text" class="mit-input" id="mit1" placeholder="Most important task…" data-i18n-ph="mit_ph"></div>
-      <div class="mit-row"><span class="mit-num">3</span><input type="checkbox" class="mit-cb" id="mitcb2"><input type="text" class="mit-input" id="mit2" placeholder="Most important task…" data-i18n-ph="mit_ph"></div>
-    </div>
-    <div class="planner-section">
-      <div class="planner-section-title" data-i18n="planner_intention">✨ Today's Intention</div>
-      <textarea class="planner-intention" id="plannerIntention" rows="2" placeholder="My focus for today is…" data-i18n-ph="planner_intention_ph"></textarea>
-    </div>
-    <div class="planner-section">
-      <div class="planner-section-title" data-i18n="planner_timeblocks">🕐 Time Blocks</div>
-      <div class="timeblock-grid" id="timeblockGrid"></div>
-    </div>
-    <button class="planner-save-btn" onclick="savePlanner()" data-i18n="btn_save">Save</button>
-  </div>
-</div>
-
-
-<!-- ══ WHEEL OF LIFE ══ -->
-<div id="wheel_life" class="page">
-  <div class="wheel-container">
-    <div class="wheel-topbar">
-      <h2>🎡 <span data-i18n="tab_wheel">Wheel of Life</span></h2>
-    </div>
-    <div class="wheel-layout">
-      <div class="wheel-sliders" id="wheelSliders"></div>
-      <div>
-        <div class="wheel-canvas-wrap"><canvas id="wheelCanvas" width="380" height="380" style="max-width:100%;"></canvas></div>
-        <div class="wheel-history" id="wheelHistory"></div>
-      </div>
-    </div>
-    <button class="wheel-save-btn" onclick="saveWheel()" data-i18n="btn_save">Save</button>
-  </div>
-</div>
-
 <div id="updateBanner">🆕 New version available! <button onclick="location.reload()">Refresh</button></div>
 <div id="onboardOverlay" class="onboard-overlay" style="display:none;"></div>
 </body>
