@@ -1176,6 +1176,68 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
 .tracker-list-unit { font-size:0.8rem; color:var(--text-muted); }
 .tracker-delete-btn { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1rem; }
 
+
+/* ── Year in Pixels ── */
+.pixels-container { max-width:960px; margin:0 auto; padding:10px 0; }
+.pixels-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px; }
+.pixels-topbar h2 { font-size:1.3rem; font-weight:700; margin:0; }
+.pixels-year-nav { display:flex; align-items:center; gap:12px; }
+.pixels-year-label { font-size:1.1rem; font-weight:700; color:var(--text-dark); min-width:54px; text-align:center; }
+.pixels-legend { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px; align-items:center; }
+.pixels-legend-item { display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--text-muted); }
+.pixels-legend-dot { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
+.pixels-months { display:flex; flex-direction:column; gap:14px; }
+.pixels-month-row { display:flex; align-items:flex-start; gap:12px; }
+.pixels-month-name { font-size:0.72rem; font-weight:700; color:var(--text-muted); width:30px; flex-shrink:0; text-align:right; padding-top:3px; letter-spacing:0.03em; text-transform:uppercase; }
+.pixels-days { display:flex; gap:3px; flex-wrap:nowrap; }
+.pixels-day { width:14px; height:14px; border-radius:3px; cursor:pointer; transition:transform var(--transition); flex-shrink:0; position:relative; }
+.pixels-day:hover { transform:scale(1.4); z-index:10; }
+.pixels-day-empty { width:14px; height:14px; flex-shrink:0; }
+.pixels-tooltip { position:fixed; background:var(--text-dark); color:white; padding:5px 10px; border-radius:8px; font-size:0.75rem; pointer-events:none; z-index:9999; white-space:nowrap; opacity:0; transition:opacity 0.1s; }
+
+/* ── Body Metrics ── */
+.body-container { max-width:860px; margin:0 auto; padding:10px 0; }
+.body-topbar { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.body-topbar h2 { font-size:1.3rem; font-weight:700; margin:0; flex:1; }
+.body-log-form { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); padding:18px 20px; margin-bottom:18px; }
+.body-form-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; margin-bottom:14px; }
+.body-field label { font-size:0.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:5px; display:block; }
+.body-field input, .body-field select { width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:'Inter',sans-serif; font-size:0.9rem; background:var(--bg-white); color:var(--text-dark); transition:border-color var(--transition); }
+.body-field input:focus, .body-field select:focus { outline:none; border-color:var(--primary); }
+.body-save-btn { background:var(--primary); color:white; border:none; padding:9px 22px; border-radius:var(--radius-sm); font-family:'Inter',sans-serif; font-weight:600; font-size:0.9rem; cursor:pointer; transition:background var(--transition); }
+.body-save-btn:hover { background:#4338ca; }
+.body-chart-wrap { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); padding:18px 20px; margin-bottom:18px; }
+.body-chart-title { font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:12px; }
+.body-entries { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; }
+.body-entries-header { display:grid; grid-template-columns:90px 80px 80px 70px 1fr 36px; gap:8px; padding:9px 14px; background:var(--bg-light); font-size:0.72rem; font-weight:700; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.04em; border-bottom:1px solid var(--border); }
+.body-entry-row { display:grid; grid-template-columns:90px 80px 80px 70px 1fr 36px; gap:8px; padding:10px 14px; border-bottom:1px solid var(--border); font-size:0.85rem; align-items:center; transition:background var(--transition); }
+.body-entry-row:last-child { border-bottom:none; }
+.body-entry-row:hover { background:var(--bg-light); }
+.body-energy-stars { color:#f59e0b; letter-spacing:-1px; font-size:0.85rem; }
+.body-no-entries { text-align:center; padding:40px; color:var(--text-muted); font-size:0.9rem; }
+.body-del-btn { background:none; border:none; color:var(--border); cursor:pointer; font-size:1rem; padding:0; transition:color var(--transition); box-shadow:none; }
+.body-del-btn:hover { color:var(--secondary); transform:none; box-shadow:none; }
+@media(max-width:600px){ .body-entries-header,.body-entry-row { grid-template-columns:70px 60px 60px 55px 1fr 28px; font-size:0.75rem; padding:8px 10px; gap:5px; } }
+
+/* ── Monthly Review ── */
+.review-container { max-width:800px; margin:0 auto; padding:10px 0; }
+.review-topbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+.review-topbar h2 { font-size:1.3rem; font-weight:700; margin:0; }
+.review-month-nav { display:flex; align-items:center; gap:12px; }
+.review-month-label { font-size:1rem; font-weight:700; color:var(--text-dark); min-width:120px; text-align:center; }
+.review-stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:20px; }
+.review-stat { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); padding:14px 16px; text-align:center; }
+.review-stat-value { font-size:1.8rem; font-weight:800; color:var(--primary); letter-spacing:-0.03em; }
+.review-stat-label { font-size:0.72rem; font-weight:600; text-transform:uppercase; color:var(--text-muted); letter-spacing:0.05em; margin-top:3px; }
+.review-questions { display:flex; flex-direction:column; gap:14px; margin-bottom:20px; }
+.review-question { background:var(--bg-white); border-radius:var(--radius); border:1px solid var(--border); padding:16px 18px; }
+.review-q-label { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--primary); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.review-textarea { width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:var(--radius-sm); font-family:'Inter',sans-serif; font-size:0.9rem; line-height:1.6; resize:none; background:var(--bg-white); color:var(--text-dark); transition:border-color var(--transition); min-height:80px; }
+.review-textarea:focus { outline:none; border-color:var(--primary); }
+.review-save-btn { width:100%; padding:11px; background:var(--primary); color:white; border:none; border-radius:var(--radius-sm); font-family:'Inter',sans-serif; font-weight:700; font-size:0.95rem; cursor:pointer; transition:background var(--transition); }
+.review-save-btn:hover { background:#4338ca; }
+.review-saved-badge { display:none; text-align:center; color:var(--success); font-size:0.85rem; font-weight:600; margin-top:8px; }
+
 </style>
 </head>
 <body>
@@ -1355,6 +1417,9 @@ body.dark .note-modal-title, body.dark .note-modal-body { background:#1a1a2e; }
     <button class="tab-btn" onclick="switchTab('matrix',this)">⚡ <span data-i18n="tab_matrix">Matrix</span></button>
     <button class="tab-btn" onclick="switchTab('readinglist',this)">📚 <span data-i18n="tab_readinglist">Lists</span></button>
     <button class="tab-btn" onclick="switchTab('trackers',this)">📈 <span data-i18n="tab_trackers">Trackers</span></button>
+    <button class="tab-btn" onclick="switchTab('pixels',this)">🎨 <span data-i18n="tab_pixels">Year in Pixels</span></button>
+    <button class="tab-btn" onclick="switchTab('body',this)">💪 <span data-i18n="tab_body">Body</span></button>
+    <button class="tab-btn" onclick="switchTab('monthreview',this)">🗓️ <span data-i18n="tab_monthreview">Monthly Review</span></button>
   </div>
   </div>
 
@@ -1889,6 +1954,8 @@ var customTrackers = [];   // [{id,name,unit,goal,color}]
 var trackerLog = {};       // {dateKey:{trackerId:value}}
 var readingList = [];      // [{id,title,type,status,author,rating,note,addedAt}]
 var matrixData = {};       // {taskId: quadrant (1-4)}
+var bodyLog = [];          // [{id,date,weight,steps,energy,note}]
+var monthlyReviews = {};   // {'YYYY-MM':{win,challenge,lesson,focus,savedAt}}
 var activeFilter = '', habitCurrentDate = new Date();
 var journalCurrentDate = new Date(), statsCurrentDate = new Date();
 var pendingFutureEntry = null, moodModalDay = null, journalModalDay = null;
@@ -1930,6 +1997,8 @@ function loadData(){
         trackerLog       = JSON.parse(ls("bj_trackerLog")    ||"{}");
         readingList      = JSON.parse(ls("bj_readingList")   ||"[]");
         matrixData       = JSON.parse(ls("bj_matrixData")    ||"{}");
+        bodyLog          = JSON.parse(ls("bj_bodyLog")        ||"[]");
+        monthlyReviews   = JSON.parse(ls("bj_monthlyRev")     ||"{}");
         financeBudgets   = JSON.parse(ls("bj_finBudgets")  ||"{}");
         finRecurring     = JSON.parse(ls("bj_finRecurring")||"[]");
         goals            = JSON.parse(ls("bj_goals")       ||"[]");
@@ -1962,6 +2031,8 @@ function saveData(){
     localStorage.setItem("bj_trackerLog",   JSON.stringify(trackerLog));
     localStorage.setItem("bj_readingList",  JSON.stringify(readingList));
     localStorage.setItem("bj_matrixData",   JSON.stringify(matrixData));
+    localStorage.setItem("bj_bodyLog",       JSON.stringify(bodyLog));
+    localStorage.setItem("bj_monthlyRev",    JSON.stringify(monthlyReviews));
     localStorage.setItem("bj_finBudgets",   JSON.stringify(financeBudgets));
     localStorage.setItem("bj_finRecurring", JSON.stringify(finRecurring));
     localStorage.setItem("bj_goals",        JSON.stringify(goals));
@@ -1975,7 +2046,7 @@ function saveData(){
                 countdowns:countdowns, recurringTasks:recurringTasks,
                 weekIntentions:weekIntentions, reflections:reflections,
                 sleepLog:sleepLog, waterLog:waterLog,
-                financeLog:financeLog, financeBudgets:financeBudgets, finRecurring:finRecurring, goals:goals, habitArchive:habitArchive, notes:notes, gratitudeLog:gratitudeLog, customTrackers:customTrackers, trackerLog:trackerLog, readingList:readingList, matrixData:matrixData
+                financeLog:financeLog, financeBudgets:financeBudgets, finRecurring:finRecurring, goals:goals, habitArchive:habitArchive, notes:notes, gratitudeLog:gratitudeLog, customTrackers:customTrackers, trackerLog:trackerLog, readingList:readingList, matrixData:matrixData, bodyLog:bodyLog, monthlyReviews:monthlyReviews
             });
         }
     }, 1500);
@@ -2003,6 +2074,8 @@ function applyFirebaseData(d){
     if(d.trackerLog)      trackerLog      = d.trackerLog      || {};
     if(d.readingList)     readingList     = d.readingList     || [];
     if(d.matrixData)      matrixData      = d.matrixData      || {};
+    if(d.bodyLog)         bodyLog         = d.bodyLog         || [];
+    if(d.monthlyReviews)  monthlyReviews  = d.monthlyReviews  || {};
     if(d.financeBudgets)  financeBudgets  = d.financeBudgets  || {};
     // Cache in localStorage
     localStorage.setItem("bj_tasks",     JSON.stringify(tasks));
@@ -3696,7 +3769,222 @@ function renderTrackers(){
 //  KANBAN BOARD
 // ═══════════════════════════════════════════════════
 
+
+
+// ═══════════════════════════════════════════════════
+//  YEAR IN PIXELS
+// ═══════════════════════════════════════════════════
+var pixelsYear = new Date().getFullYear();
+
+function renderPixels(){
+    if(!document.getElementById("pixelsGrid")) return;
+    var grid = document.getElementById("pixelsGrid");
+    var legend = document.getElementById("pixelsLegend");
+    document.getElementById("pixelsYearLabel").textContent = pixelsYear;
+
+    // Legend
+    legend.innerHTML = MOOD_OPTIONS.map(function(m){
+        return '<div class="pixels-legend-item">'
+            +'<div class="pixels-legend-dot" style="background:'+m.color+'"></div>'
+            +'<span>'+m.emoji+' '+m.label+'</span></div>';
+    }).join("") + '<div class="pixels-legend-item"><div class="pixels-legend-dot" style="background:var(--border)"></div><span>No entry</span></div>';
+
+    var months = document.createElement("div");
+    months.className = "pixels-months";
+    var monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    for(var mo=0; mo<12; mo++){
+        var row = document.createElement("div");
+        row.className = "pixels-month-row";
+        var label = document.createElement("div");
+        label.className = "pixels-month-name";
+        label.textContent = monthNames[mo];
+        row.appendChild(label);
+        var daysWrap = document.createElement("div");
+        daysWrap.className = "pixels-days";
+        var daysInMonth = new Date(pixelsYear, mo+1, 0).getDate();
+        for(var d=1; d<=daysInMonth; d++){
+            var dk = pixelsYear+"-"+String(mo+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+            var mood = moodLog[dk];
+            var cell = document.createElement("div");
+            cell.className = "pixels-day";
+            cell.style.background = (mood && mood.color) ? mood.color : "var(--border)";
+            cell.title = dk + (mood ? " — " + mood.emoji + " " + mood.label : "");
+            cell.setAttribute("data-dk", dk);
+            cell.addEventListener("click", function(){ switchTab("calendar", document.querySelector('.tab-btn[onclick*="calendar"]')); });
+            cell.addEventListener("mouseenter", function(e){
+                var tip = document.getElementById("pixelsTip");
+                if(!tip){ tip=document.createElement("div"); tip.id="pixelsTip"; tip.className="pixels-tooltip"; document.body.appendChild(tip); }
+                var m2 = moodLog[e.target.dataset.dk];
+                tip.textContent = e.target.dataset.dk + (m2 ? "  "+m2.emoji+" "+m2.label : "  No entry");
+                tip.style.opacity="1";
+                tip.style.left=(e.clientX+12)+"px";
+                tip.style.top=(e.clientY-28)+"px";
+            });
+            cell.addEventListener("mouseleave", function(){
+                var tip=document.getElementById("pixelsTip"); if(tip) tip.style.opacity="0";
+            });
+            daysWrap.appendChild(cell);
+        }
+        row.appendChild(daysWrap);
+        months.appendChild(row);
+    }
+    grid.innerHTML = "";
+    grid.appendChild(months);
+}
+function pixelsPrevYear(){ pixelsYear--; renderPixels(); }
+function pixelsNextYear(){ if(pixelsYear < new Date().getFullYear()) { pixelsYear++; renderPixels(); } }
+
+// ═══════════════════════════════════════════════════
+//  BODY METRICS
+// ═══════════════════════════════════════════════════
+function renderBody(){
+    if(!document.getElementById("bodyEntriesWrap")) return;
+    renderBodyChart();
+    renderBodyEntries();
+}
+function saveBodyEntry(){
+    var date = document.getElementById("bodyDate").value;
+    var weight = document.getElementById("bodyWeight").value;
+    var steps = document.getElementById("bodySteps").value;
+    var energy = document.getElementById("bodyEnergy").value;
+    var note = document.getElementById("bodyNote").value.trim();
+    if(!date) return showToast("Pick a date","📅",2000);
+    // Remove existing entry for same date
+    bodyLog = bodyLog.filter(function(e){ return e.date !== date; });
+    bodyLog.push({ id: Date.now(), date:date, weight:weight?parseFloat(weight):null, steps:steps?parseInt(steps):null, energy:parseInt(energy), note:note });
+    bodyLog.sort(function(a,b){ return b.date.localeCompare(a.date); });
+    saveData();
+    document.getElementById("bodyWeight").value = "";
+    document.getElementById("bodySteps").value = "";
+    document.getElementById("bodyNote").value = "";
+    showToast(t("body_saved"),"💪",2000);
+    renderBodyChart();
+    renderBodyEntries();
+}
+function deleteBodyEntry(id){
+    bodyLog = bodyLog.filter(function(e){ return e.id !== id; });
+    saveData(); renderBodyChart(); renderBodyEntries();
+}
+function renderBodyChart(){
+    var canvas = document.getElementById("bodyCanvas"); if(!canvas) return;
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width = canvas.offsetWidth || 700;
+    var H = canvas.height = 140;
+    ctx.clearRect(0,0,W,H);
+    var entries = bodyLog.filter(function(e){ return e.weight; }).slice(0,30).reverse();
+    if(entries.length < 2){ ctx.fillStyle="var(--text-muted)"; ctx.font="14px Inter,sans-serif"; ctx.textAlign="center"; ctx.fillText("Log at least 2 weight entries to see a trend",W/2,H/2); return; }
+    var weights = entries.map(function(e){ return e.weight; });
+    var minW = Math.min.apply(null,weights)-1, maxW = Math.max.apply(null,weights)+1;
+    var pad = {l:36,r:16,t:16,b:24};
+    var cw = W-pad.l-pad.r, ch = H-pad.t-pad.b;
+    // Grid lines
+    ctx.strokeStyle="#e5e7eb"; ctx.lineWidth=1;
+    for(var i=0;i<4;i++){ var y=pad.t+ch*i/3; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke(); }
+    // Labels
+    ctx.fillStyle="#6b7280"; ctx.font="10px Inter,sans-serif"; ctx.textAlign="right";
+    for(var i=0;i<4;i++){ var v=maxW-(maxW-minW)*i/3; ctx.fillText(v.toFixed(1),pad.l-4,pad.t+ch*i/3+4); }
+    // Line
+    ctx.beginPath(); ctx.strokeStyle="#4f46e5"; ctx.lineWidth=2;
+    entries.forEach(function(e,i){
+        var x=pad.l+i*cw/(entries.length-1);
+        var y=pad.t+ch*(1-(e.weight-minW)/(maxW-minW));
+        i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+    // Fill
+    ctx.lineTo(pad.l+cw,pad.t+ch); ctx.lineTo(pad.l,pad.t+ch); ctx.closePath();
+    ctx.fillStyle="rgba(79,70,229,0.07)"; ctx.fill();
+    // Dots
+    entries.forEach(function(e,i){
+        var x=pad.l+i*cw/(entries.length-1);
+        var y=pad.t+ch*(1-(e.weight-minW)/(maxW-minW));
+        ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2);
+        ctx.fillStyle="#4f46e5"; ctx.fill();
+        ctx.strokeStyle="white"; ctx.lineWidth=2; ctx.stroke();
+    });
+}
+function renderBodyEntries(){
+    var wrap = document.getElementById("bodyEntriesWrap"); if(!wrap) return;
+    if(bodyLog.length===0){ wrap.innerHTML='<div class="body-no-entries">No entries yet. Log your first metrics above.</div>'; return; }
+    wrap.innerHTML = bodyLog.slice(0,20).map(function(e){
+        var stars = "★".repeat(e.energy||0) + "☆".repeat(5-(e.energy||0));
+        return '<div class="body-entry-row">'
+            +'<span>'+e.date.slice(5)+'</span>'
+            +'<span>'+(e.weight!=null?e.weight+" kg":"—")+'</span>'
+            +'<span>'+(e.steps!=null?e.steps.toLocaleString():"—")+'</span>'
+            +'<span class="body-energy-stars">'+stars+'</span>'
+            +'<span style="font-size:0.8rem;color:var(--text-muted)">'+escHtml(e.note||"")+'</span>'
+            +'<button class="body-del-btn" onclick="deleteBodyEntry('+e.id+')">×</button>'
+            +'</div>';
+    }).join("");
+}
+
+// ═══════════════════════════════════════════════════
+//  MONTHLY REVIEW
+// ═══════════════════════════════════════════════════
+var reviewDate = new Date();
+
+function renderMonthReview(){
+    if(!document.getElementById("reviewStatsRow")) return;
+    var y = reviewDate.getFullYear(), mo = reviewDate.getMonth();
+    var key = y+"-"+String(mo+1).padStart(2,"0");
+    document.getElementById("reviewMonthLabel").textContent = getMonthName(mo)+" "+y;
+    // Stats
+    var moStr = key;
+    var tasksTotal=0, tasksDone=0, journalCount=0, habitsTotal=0, habitsDone=0, moodSum=0, moodCount=0;
+    Object.keys(tasks).forEach(function(dk){
+        if(!dk.startsWith(moStr)) return;
+        (tasks[dk]||[]).forEach(function(t){ if(t.type==="task"||!t.type){ tasksTotal++; if(t.status==="completed") tasksDone++; } });
+    });
+    Object.keys(journal).forEach(function(dk){ if(dk.startsWith(moStr)&&journal[dk]) journalCount++; });
+    var daysInMo = new Date(y,mo+1,0).getDate();
+    for(var d=1;d<=daysInMo;d++){
+        var dk=key+"-"+String(d).padStart(2,"0");
+        var m=moodLog[dk];
+        if(m&&m.emoji){ var MSCORE={'😊':5,'🙂':4,'😐':3,'😔':2,'😢':1}; moodSum+=(MSCORE[m.emoji]||3); moodCount++; }
+        habits.forEach(function(h){ habitsTotal++; if((habitLogs[h.id]||{})[dk]) habitsDone++; });
+    }
+    var moodAvg = moodCount>0 ? (moodSum/moodCount).toFixed(1) : "—";
+    var habitPct = habitsTotal>0 ? Math.round(habitsDone/habitsTotal*100) : 0;
+    document.getElementById("reviewStatsRow").innerHTML =
+        '<div class="review-stat"><div class="review-stat-value">'+tasksDone+'</div><div class="review-stat-label">Tasks Done</div></div>'
+       +'<div class="review-stat"><div class="review-stat-value">'+habitPct+'%</div><div class="review-stat-label">Habits</div></div>'
+       +'<div class="review-stat"><div class="review-stat-value">'+moodAvg+'</div><div class="review-stat-label">Mood Avg</div></div>'
+       +'<div class="review-stat"><div class="review-stat-value">'+journalCount+'</div><div class="review-stat-label">Journal Entries</div></div>';
+    // Load saved review
+    var saved = monthlyReviews[key]||{};
+    document.getElementById("reviewWin").value = saved.win||"";
+    document.getElementById("reviewChallenge").value = saved.challenge||"";
+    document.getElementById("reviewLesson").value = saved.lesson||"";
+    document.getElementById("reviewFocus").value = saved.focus||"";
+    document.getElementById("reviewSavedBadge").style.display="none";
+}
+function saveMonthReview(){
+    var y=reviewDate.getFullYear(), mo=reviewDate.getMonth();
+    var key=y+"-"+String(mo+1).padStart(2,"0");
+    monthlyReviews[key]={
+        win: document.getElementById("reviewWin").value.trim(),
+        challenge: document.getElementById("reviewChallenge").value.trim(),
+        lesson: document.getElementById("reviewLesson").value.trim(),
+        focus: document.getElementById("reviewFocus").value.trim(),
+        savedAt: new Date().toISOString()
+    };
+    saveData();
+    var badge = document.getElementById("reviewSavedBadge");
+    badge.style.display="block";
+    setTimeout(function(){ badge.style.display="none"; },2500);
+}
+function reviewPrevMonth(){ reviewDate.setMonth(reviewDate.getMonth()-1); renderMonthReview(); }
+function reviewNextMonth(){
+    var now=new Date();
+    if(reviewDate.getFullYear()<now.getFullYear()||(reviewDate.getFullYear()===now.getFullYear()&&reviewDate.getMonth()<now.getMonth())){
+        reviewDate.setMonth(reviewDate.getMonth()+1); renderMonthReview();
+    }
+}
+
 renderCalendar(); renderChecklist(); renderDashboard(); renderCountdowns(); renderSprint(); renderOverdue(); loadThemeColor(); renderTagFilters();
+// Set today as default date for body log
+(function(){ var el=document.getElementById("bodyDate"); if(el) el.value=getDateKey(new Date()); })();
 </script>
 
 <!-- FAB Quick Capture -->
@@ -4830,6 +5118,12 @@ var TRANSLATIONS = {
     // Trackers
     tab_trackers_full:"📈 Trackers",
     tracker_metric_name:"METRIC NAME", tracker_unit:"UNIT", tracker_daily_goal:"DAILY GOAL", tracker_color:"COLOR",
+    // Year in Pixels
+    tab_pixels:"Year in Pixels",
+    // Body Metrics
+    tab_body:"Body", body_saved:"Entry logged!",
+    // Monthly Review
+    tab_monthreview:"Monthly Review",
     // Quick Capture
     qc_title:"⚡ Quick Capture", qc_ph:"What do you need to do?", qc_add:"Add Task",
     // Drive Backup
@@ -4901,6 +5195,7 @@ var TRANSLATIONS = {
     search_placeholder_short:"🔍 搜索…",
     // Trackers
     tracker_metric_name:"指标名称", tracker_unit:"单位", tracker_daily_goal:"每日目标", tracker_color:"颜色",
+    tab_pixels:"年度像素", tab_body:"身体", body_saved:"已记录！", tab_monthreview:"月度回顾",
     // Quick Capture
     qc_title:"⚡ 快速记录", qc_ph:"你需要做什么？", qc_add:"添加任务",
     // Drive Backup
@@ -4972,6 +5267,7 @@ var TRANSLATIONS = {
     search_placeholder_short:"🔍 ค้นหา…",
     // Trackers
     tracker_metric_name:"ชื่อตัวชี้วัด", tracker_unit:"หน่วย", tracker_daily_goal:"เป้าหมายต่อวัน", tracker_color:"สี",
+    tab_pixels:"ปีในพิกเซล", tab_body:"ร่างกาย", body_saved:"บันทึกแล้ว!", tab_monthreview:"ทบทวนรายเดือน",
     // Quick Capture
     qc_title:"⚡ บันทึกด่วน", qc_ph:"คุณต้องทำอะไร?", qc_add:"เพิ่มงาน",
     // Drive Backup
@@ -6024,7 +6320,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script>
 if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
-        navigator.serviceWorker.register('./sw.js?v=202605281200')
+        navigator.serviceWorker.register('./sw.js?v=202605281500')
             .then(function(reg){
                 reg.update();
                 reg.addEventListener('updatefound', function(){
@@ -6051,7 +6347,7 @@ if('serviceWorker' in navigator){
         navigator.serviceWorker.getRegistrations().then(function(regs){
             regs.forEach(function(r){
                 // Only keep the current registration, unregister old ones
-                if(r.active && r.active.scriptURL && !r.active.scriptURL.includes('v=202605281200')){
+                if(r.active && r.active.scriptURL && !r.active.scriptURL.includes('v=202605281500')){
                     r.unregister().then(function(){ window.location.reload(); });
                 }
             });
@@ -6472,6 +6768,111 @@ onAuthStateChanged(auth, async (user) => {
     <div id="trackerChartSection"></div>
   </div>
 </div>
+
+
+<!-- ══ YEAR IN PIXELS ══ -->
+<div id="pixels" class="page">
+  <div class="pixels-container">
+    <div class="pixels-topbar">
+      <h2>🎨 <span data-i18n="tab_pixels">Year in Pixels</span></h2>
+      <div class="pixels-year-nav">
+        <button class="btn-nav" onclick="pixelsPrevYear()">‹</button>
+        <span class="pixels-year-label" id="pixelsYearLabel">2026</span>
+        <button class="btn-nav" onclick="pixelsNextYear()">›</button>
+      </div>
+    </div>
+    <div class="pixels-legend" id="pixelsLegend"></div>
+    <div id="pixelsGrid"></div>
+  </div>
+</div>
+
+
+<!-- ══ BODY METRICS ══ -->
+<div id="body" class="page">
+  <div class="body-container">
+    <div class="body-topbar">
+      <h2>💪 <span data-i18n="tab_body">Body Metrics</span></h2>
+    </div>
+    <div class="body-log-form">
+      <div class="body-form-grid">
+        <div class="body-field">
+          <label>Date</label>
+          <input type="date" id="bodyDate">
+        </div>
+        <div class="body-field">
+          <label>Weight (kg)</label>
+          <input type="number" id="bodyWeight" step="0.1" min="0" placeholder="e.g. 68.5">
+        </div>
+        <div class="body-field">
+          <label>Steps</label>
+          <input type="number" id="bodySteps" min="0" placeholder="e.g. 8500">
+        </div>
+        <div class="body-field">
+          <label>Energy (1–5)</label>
+          <select id="bodyEnergy">
+            <option value="5">★★★★★ Great</option>
+            <option value="4">★★★★☆ Good</option>
+            <option value="3" selected>★★★☆☆ Okay</option>
+            <option value="2">★★☆☆☆ Low</option>
+            <option value="1">★☆☆☆☆ Rough</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <input type="text" id="bodyNote" placeholder="Optional note…" style="flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.88rem;background:var(--bg-white);color:var(--text-dark);">
+        <button class="body-save-btn" onclick="saveBodyEntry()">Log Entry</button>
+      </div>
+    </div>
+    <div class="body-chart-wrap">
+      <div class="body-chart-title">Weight Trend</div>
+      <canvas id="bodyCanvas" style="width:100%;display:block;"></canvas>
+    </div>
+    <div class="body-entries">
+      <div class="body-entries-header">
+        <span>Date</span><span>Weight</span><span>Steps</span><span>Energy</span><span>Note</span><span></span>
+      </div>
+      <div id="bodyEntriesWrap"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ MONTHLY REVIEW ══ -->
+<div id="monthreview" class="page">
+  <div class="review-container">
+    <div class="review-topbar">
+      <h2>🗓️ <span data-i18n="tab_monthreview">Monthly Review</span></h2>
+      <div class="review-month-nav">
+        <button class="btn-nav" onclick="reviewPrevMonth()">‹</button>
+        <span class="review-month-label" id="reviewMonthLabel"></span>
+        <button class="btn-nav" onclick="reviewNextMonth()">›</button>
+      </div>
+    </div>
+    <div class="review-stats-row" id="reviewStatsRow"></div>
+    <div class="review-questions">
+      <div class="review-question">
+        <div class="review-q-label">🏆 Biggest Win</div>
+        <textarea class="review-textarea" id="reviewWin" placeholder="What went really well this month?"></textarea>
+      </div>
+      <div class="review-question">
+        <div class="review-q-label">⚡ Biggest Challenge</div>
+        <textarea class="review-textarea" id="reviewChallenge" placeholder="What was the hardest part?"></textarea>
+      </div>
+      <div class="review-question">
+        <div class="review-q-label">💡 Key Lesson</div>
+        <textarea class="review-textarea" id="reviewLesson" placeholder="What did you learn about yourself?"></textarea>
+      </div>
+      <div class="review-question">
+        <div class="review-q-label">🎯 Focus for Next Month</div>
+        <textarea class="review-textarea" id="reviewFocus" placeholder="What is your #1 intention going forward?"></textarea>
+      </div>
+    </div>
+    <button class="review-save-btn" onclick="saveMonthReview()">Save Review</button>
+    <div class="review-saved-badge" id="reviewSavedBadge">✓ Review saved</div>
+  </div>
+</div>
+
+
 <div id="updateBanner">🆕 New version available! <button onclick="location.reload()">Refresh</button></div>
 <div id="onboardOverlay" class="onboard-overlay" style="display:none;"></div>
 </body>
