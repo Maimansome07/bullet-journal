@@ -155,6 +155,7 @@ button:hover { border-color: var(--primary); color: var(--primary); transform: n
 .task.priority .task-symbol { color: var(--accent); }
 .task-text { flex: 1; word-break: break-word; line-height: 1.3; }
 .task.completed .task-text { opacity: 0.5; text-decoration: line-through; }
+.task.migrated .task-text { opacity: 0.45; text-decoration: line-through; color: var(--text-muted); }
 .add-btn { width: 20px; height: 20px; border: 2px dashed var(--primary); background: transparent; color: var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 3px; font-size: 13px; cursor: pointer; transition: all var(--transition); padding: 0; box-shadow: none; transform: none; }
 .add-btn:hover { background: var(--primary); color: white; border-style: solid; transform: none; box-shadow: none; }
 
@@ -3094,6 +3095,7 @@ function createTaskElement(task,dateKey,idx){
             taskEl.querySelector(".task-title-text")?taskEl.querySelector(".task-title-text").appendChild(dueSpan):taskEl.appendChild(dueSpan);
         }
     if(task.status==="completed") taskEl.classList.add("completed");
+    if(task.status==="migrated") taskEl.classList.add("migrated");
     var symbol=document.createElement("div"); symbol.className="task-symbol";
     symbol.textContent=task.status==="completed"?"X":(symbols[task.type]||"•");
     symbol.title="Click to toggle complete";
@@ -7406,9 +7408,4 @@ onAuthStateChanged(auth, async (user) => {
         <button class="pom-btn" id="pomBreakBtn" onclick="pomSetBreak(5)">☕ 5 min</button>
         <button class="pom-btn" id="pomLongBtn" onclick="pomSetBreak(15)">🛋 15 min</button>
       </div>
-      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></div></div>
-    </div>
-    <!-- Sleep log -->
-    <div class="focus-note-wrap">
-      <div class="focus-note-label">🌙 Sleep Log</div>
-      <div class="sleep-input-row
+      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></
