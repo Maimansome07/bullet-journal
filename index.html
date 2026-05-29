@@ -155,7 +155,11 @@ button:hover { border-color: var(--primary); color: var(--primary); transform: n
 .task.priority .task-symbol { color: var(--accent); }
 .task-text { flex: 1; word-break: break-word; line-height: 1.3; }
 .task.completed .task-text { opacity: 0.5; text-decoration: line-through; }
-.task.migrated .task-text { opacity: 0.45; text-decoration: line-through; color: var(--text-muted); }
+.task.migrated .task-text  { opacity: 0.45; text-decoration: line-through; color: var(--text-muted); }
+.task.migrated .task-symbol  { color: var(--text-muted); }
+.task.scheduled .task-text { opacity: 0.55; color: var(--text-muted); }
+.task.scheduled .task-symbol { color: #74b9ff; }
+.task.active .task-symbol   { color: var(--success); }
 .add-btn { width: 20px; height: 20px; border: 2px dashed var(--primary); background: transparent; color: var(--primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 3px; font-size: 13px; cursor: pointer; transition: all var(--transition); padding: 0; box-shadow: none; transform: none; }
 .add-btn:hover { background: var(--primary); color: white; border-style: solid; transform: none; box-shadow: none; }
 
@@ -3095,15 +3099,16 @@ function createTaskElement(task,dateKey,idx){
             taskEl.querySelector(".task-title-text")?taskEl.querySelector(".task-title-text").appendChild(dueSpan):taskEl.appendChild(dueSpan);
         }
     if(task.status==="completed") taskEl.classList.add("completed");
-    if(task.status==="migrated") taskEl.classList.add("migrated");
+    if(task.status==="migrated")  taskEl.classList.add("migrated");
+    if(task.status==="scheduled") taskEl.classList.add("scheduled");
+    if(task.status==="active")    taskEl.classList.add("active");
     var symbol=document.createElement("div"); symbol.className="task-symbol";
-    symbol.textContent=task.status==="completed"?"X":(symbols[task.type]||"•");
+    var statusSymbols={pending:symbols[task.type]||"•",completed:"X",migrated:">",scheduled:"<",active:"→"};
+    symbol.textContent=statusSymbols[task.status]||symbols[task.type]||"•";
     symbol.title="Click to toggle complete";
     symbol.onclick=(function(t,dk){ return function(e){ e.stopPropagation(); t.status=t.status==="completed"?"pending":"completed"; saveData(); renderCalendar(); }; })(task,dateKey);
     var text=document.createElement("div"); text.className="task-text";
-    var sm={pending:"",completed:"X",migrated:">",scheduled:"<",active:"→"};
     var disp=task.title;
-    if(task.status&&task.status!=="pending"&&task.status!=="completed") disp=sm[task.status]+" "+task.title;
     text.textContent=disp; text.style.cursor="pointer";
     text.onclick=(function(dk,i,t){ return function(e){e.stopPropagation();openDetailsModal(dk,i,t);}; })(dateKey,idx,task);
     // Tag chips
@@ -3716,7 +3721,7 @@ function renderOverdue(){
     Object.keys(tasks).sort().forEach(function(dk){
         if(dk >= todayKey) return; // skip today and future
         (tasks[dk]||[]).forEach(function(t){
-            if(t.status !== "completed") items.push({task:t, dk:dk});
+            if(t.status !== "completed" && t.status !== "migrated" && t.status !== "scheduled") items.push({task:t, dk:dk});
         });
     });
     var sec = document.getElementById("overdueSection");
@@ -7404,9 +7409,4 @@ onAuthStateChanged(auth, async (user) => {
       <div class="pom-mode-label" id="pomModeLabel"><span data-i18n="pom_work">WORK SESSION</span></div>
       <div class="pom-btns">
         <button class="pom-btn pom-primary" id="pomStartBtn" onclick="pomToggle()">▶ <span data-i18n="pom_start">Start</span></button>
-        <button class="pom-btn" onclick="pomReset()">↺ <span data-i18n="btn_reset">Reset</span></button>
-        <button class="pom-btn" id="pomBreakBtn" onclick="pomSetBreak(5)">☕ 5 min</button>
-        <button class="pom-btn" id="pomLongBtn" onclick="pomSetBreak(15)">🛋 15 min</button>
-      </div>
-      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></div></div>
-    </div
+        <button class="pom-btn" onclick="pomReset()">↺ <span dat
