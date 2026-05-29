@@ -5267,12 +5267,13 @@ function addTouchDrag(el, dateKey, idx){
         var title=document.getElementById("taskTitle").value.trim(); if(!title) return;
         var stEl=document.getElementById("taskStartTime"), etEl=document.getElementById("taskEndTime");
         var startTime=stEl?stEl.value:"", endTime=etEl?etEl.value:"";
+        var chosenStatus=document.getElementById("taskStatus").value;
         var entry={
             title:title,
             type:document.getElementById("taskType").value,
             priority:document.getElementById("taskPriority").value,
             dueDate:document.getElementById("taskDueDate").value||"",
-            status:document.getElementById("taskStatus").value,
+            status:chosenStatus,
             notes:document.getElementById("taskNotes").value,
             id:Date.now(),
             startTime:startTime,
@@ -5285,7 +5286,17 @@ function addTouchDrag(el, dateKey, idx){
             entry.id=tasks[window.currentDay][window.editingTaskId].id;
             tasks[window.currentDay][window.editingTaskId]=entry;
         } else tasks[window.currentDay].push(entry);
+        // ── Auto-forward: if marked Migrated, copy a fresh pending task to today ──
+        if(chosenStatus==="migrated" && window.currentDay!==window.getTodayKey()){
+            var todayKey=window.getTodayKey();
+            if(!tasks[todayKey]) tasks[todayKey]=[];
+            tasks[todayKey].push(Object.assign({},entry,{
+                id:Date.now()+Math.floor(Math.random()*9999),
+                status:"pending"
+            }));
+        }
         window.saveData(); window.renderCalendar(); window.closeModal(); window.renderDashboard();
+        if(chosenStatus==="migrated") window.renderOverdue&&window.renderOverdue();
     };
 })();
 
@@ -7400,18 +7411,4 @@ onAuthStateChanged(auth, async (user) => {
     <!-- Sleep log -->
     <div class="focus-note-wrap">
       <div class="focus-note-label">🌙 Sleep Log</div>
-      <div class="sleep-input-row">
-        <label data-i18n="sleep_bedtime">Bedtime</label>
-        <input type="time" id="sleepBed" onchange="saveSleep()">
-        <label data-i18n="sleep_wakeup">Wake up</label>
-        <input type="time" id="sleepWake" onchange="saveSleep()">
-        <span class="sleep-hours-badge" id="sleepBadge" style="margin-left:8px;"></span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="updateBanner">🆕 New version available! <button onclick="location.reload()">Refresh</button></div>
-<div id="onboardOverlay" class="onboard-overlay" style="display:none;"></div>
-</body>
-</html>
+      <div class="sleep-input-row
