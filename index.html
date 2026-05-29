@@ -2104,6 +2104,7 @@ input:checked + .notif-slider { background: var(--primary); }
         <div class="countdown-add-bar">
           <input type="text" class="future-input" id="countdownTitle" placeholder="Event name (e.g. Birthday, Trip to Japan…)" onkeypress="if(event.key==='Enter')addCountdown()">
           <input type="date" class="future-month-select" id="countdownDate" style="min-width:150px;">
+          <input type="time" class="future-month-select" id="countdownTime" style="min-width:110px;">
           <button class="add-future-btn" onclick="addCountdown()">Add</button>
         </div>
         <div class="countdown-block" id="countdownList"></div>
@@ -3597,22 +3598,64 @@ function renderFutureLog(){
 
 // COUNTDOWNS
 function addCountdown(){
-    var title=document.getElementById("countdownTitle").value.trim(), date=document.getElementById("countdownDate").value;
+    var title=document.getElementById("countdownTitle").value.trim();
+    var date=document.getElementById("countdownDate").value;
+    var time=document.getElementById("countdownTime").value||"";
     if(!title||!date){alert("Please enter a name and date.");return;}
-    countdowns.push({id:Date.now(),title,date}); document.getElementById("countdownTitle").value=""; document.getElementById("countdownDate").value="";
+    countdowns.push({id:Date.now(),title:title,date:date,time:time});
+    document.getElementById("countdownTitle").value="";
+    document.getElementById("countdownDate").value="";
+    document.getElementById("countdownTime").value="";
     saveData(); renderCountdowns(); renderCalendar(); renderDashboard();
 }
 function deleteCountdown(id){ countdowns=countdowns.filter(function(c){return c.id!==id;}); saveData(); renderCountdowns(); renderCalendar(); renderDashboard(); }
 function renderCountdowns(){
-    var el=document.getElementById("countdownList"), todayKey=getTodayKey();
-    var sorted=countdowns.slice().sort(function(a,b){return a.date>b.date?1:-1;});
+    var el=document.getElementById("countdownList");
+    if(!el) return;
+    var sorted=countdowns.slice().sort(function(a,b){return (a.date+(a.time||""))>(b.date+(b.time||""))?1:-1;});
     if(!sorted.length){el.innerHTML='<div class="future-entry" style="justify-content:center;color:var(--text-muted);font-style:italic;">No countdowns yet. Add one above!</div>';return;}
     el.innerHTML=sorted.map(function(c){
-        var diff=Math.ceil((parseLocalDate(c.date)-new Date())/(1000*60*60*24));
-        var label=diff<0?"Past ("+Math.abs(diff)+"d ago)":diff===0?"Today!":diff===1?"Tomorrow":diff+" days";
-        var col=diff<0?"#b2bec3":diff<=7?"var(--secondary)":"var(--primary)";
-        return '<div class="countdown-item"><div class="countdown-days-badge" style="background:'+col+';">'+label+'</div><div class="countdown-title-text">'+escHtml(c.title)+'</div><div class="countdown-date-text">'+parseLocalDate(c.date).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})+'</div><button class="btn-future-delete" onclick="deleteCountdown('+c.id+')" title="Delete">×</button></div>';
+        var target;
+        if(c.time){
+            var parts=c.date.split("-"), tp=c.time.split(":");
+            target=new Date(+parts[0],+parts[1]-1,+parts[2],+tp[0],+tp[1],0);
+        } else {
+            target=parseLocalDate(c.date);
+        }
+        var now=new Date();
+        var msLeft=target-now;
+        var label, subLabel="";
+        if(msLeft<0){
+            var aDiff=Math.floor(-msLeft/86400000);
+            label="Past";
+            subLabel=aDiff===0?"Earlier today":aDiff+"d ago";
+        } else if(c.time && msLeft<86400000){
+            // under 24 h — show h:m:s
+            var h=Math.floor(msLeft/3600000);
+            var m=Math.floor((msLeft%3600000)/60000);
+            var s=Math.floor((msLeft%60000)/1000);
+            label=(h?h+"h ":"")+m+"m "+s+"s";
+            subLabel="Today at "+c.time;
+        } else {
+            var days=Math.ceil(msLeft/86400000);
+            label=days===0?"Today!":days===1?"Tomorrow":days+" days";
+            if(c.time) subLabel=c.time;
+        }
+        var col=msLeft<0?"#b2bec3":msLeft<86400000?"var(--secondary)":msLeft<7*86400000?"var(--accent)":"var(--primary)";
+        var dateStr=target.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
+        if(c.time) dateStr+=" · "+c.time;
+        return '<div class="countdown-item" id="cd-'+c.id+'">'
+            +'<div class="countdown-days-badge" style="background:'+col+';min-width:64px;text-align:center;font-size:0.82rem;line-height:1.3;">'+label+(subLabel?'<br><span style="font-size:0.68rem;opacity:0.85;">'+subLabel+'</span>':'')+'</div>'
+            +'<div class="countdown-title-text">'+escHtml(c.title)+'</div>'
+            +'<div class="countdown-date-text">'+dateStr+'</div>'
+            +'<button class="btn-future-delete" onclick="deleteCountdown('+c.id+')" title="Delete">×</button>'
+            +'</div>';
     }).join("");
+    // Live tick for any countdown with a time set
+    if(countdowns.some(function(c){return c.time;})){
+        clearTimeout(window._cdTick);
+        window._cdTick=setTimeout(renderCountdowns,1000);
+    }
 }
 
 // RECURRING TASKS
@@ -7373,40 +7416,4 @@ onAuthStateChanged(auth, async (user) => {
       <div class="review-question">
         <div class="review-q-label">💡 Key Lesson</div>
         <textarea class="review-textarea" id="reviewLesson" placeholder="What did you learn about yourself?"></textarea>
-      </div>
-      <div class="review-question">
-        <div class="review-q-label">🎯 Focus for Next Month</div>
-        <textarea class="review-textarea" id="reviewFocus" placeholder="What is your #1 intention going forward?"></textarea>
-      </div>
-    </div>
-    <button class="review-save-btn" onclick="saveMonthReview()">Save Review</button>
-    <div class="review-saved-badge" id="reviewSavedBadge">✓ Review saved</div>
-  </div>
-</div>
-
-
-
-<!-- ══ FOCUS TAB ══ -->
-<div id="focus" class="page">
-  <div class="focus-container">
-    <div class="focus-top">
-      <h2>🍅 <span data-i18n="tab_focus">Focus</span></h2>
-      <span id="pomSessions" style="font-size:0.8rem;color:var(--text-muted);font-weight:500;"></span>
-    </div>
-    <!-- Focus intention -->
-    <div class="focus-note-wrap">
-      <div class="focus-note-label">What are you working on?</div>
-      <div class="pom-task-row" style="margin:0;">
-        <select class="pom-task-select" id="pomTaskSelect" onchange="setPomTask()" style="flex:1;">
-          <option value="">— free session —</option>
-        </select>
-      </div>
-      <div class="pom-current-task" id="pomCurrentTask" style="margin-top:6px;"></div>
-    </div>
-    <!-- Pomodoro card -->
-    <div class="pomodoro-card">
-      <div class="pom-display" id="pomDisplay">25:00</div>
-      <div class="pom-mode-label" id="pomModeLabel"><span data-i18n="pom_work">WORK SESSION</span></div>
-      <div class="pom-btns">
-        <button class="pom-btn pom-primary" id="pomStartBtn" onclick="pomToggle()">▶ <span data-i18n="pom_start">Start</span></button>
-        <button class="pom-btn" onclick="pomReset()">↺ <span dat
+      
