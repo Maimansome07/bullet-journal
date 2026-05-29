@@ -6875,7 +6875,7 @@ document.addEventListener('DOMContentLoaded', function(){
 <script>
 if('serviceWorker' in navigator){
     window.addEventListener('load', function(){
-        navigator.serviceWorker.register('./sw.js?v=202605282300')
+        navigator.serviceWorker.register('./sw.js?v=202605290100')
             .then(function(reg){
                 reg.update();
                 reg.addEventListener('updatefound', function(){
@@ -6913,11 +6913,11 @@ if('serviceWorker' in navigator){
 
 <!-- Firebase Cloud Sync -->
 <script type="module">
-import { initializeApp }                          from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { initializeApp }                          from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 import { getFirestore, doc, setDoc, getDoc,
-         onSnapshot }                             from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+         onSnapshot }                             from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup,
-         onAuthStateChanged, signOut }            from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+         onAuthStateChanged, signOut }            from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
 const firebaseConfig = {
     apiKey:            "AIzaSyDESPUNudT24leKO3vuxgGdWKdLOWN9Ix0",
@@ -6934,6 +6934,8 @@ const auth = getAuth(app);
 
 let unsubscribeSnapshot = null;
 let lastLocalSave = 0;
+let _snapshotRetryTimer = null;
+let _currentUser = null;
 
 function setSyncStatus(status) {
     const el = document.getElementById("syncStatus");
@@ -7095,24 +7097,65 @@ onAuthStateChanged(auth, async (user) => {
         }
     }
 
-    // Real-time listener for multi-device sync
-    if (unsubscribeSnapshot) unsubscribeSnapshot();
-    unsubscribeSnapshot = onSnapshot(
-        doc(db, "bulletjournal", user.uid),
-        (snap) => {
-            if (!snap.exists()) return;
-            const d = snap.data();
-            if (d._ts && d._ts >= lastLocalSave - 100 && d._ts <= lastLocalSave + 3000) return;
-            if (window.applyFirebaseData) window.applyFirebaseData(d);
-            setSyncStatus("synced");
-        },
-        (err) => {
-            console.error("Snapshot error:", err);
-            if (err.code === "permission-denied") setSyncStatus("noperms");
-            else if (!navigator.onLine) setSyncStatus("offline");
-            else setSyncStatus("error");
-        }
-    );
+    // Real-time listener for multi-device sync — with auto-reconnect
+    startSnapshot(user);
+});
+
+function startSnapshot(user) {
+    if (!user) return;
+    _currentUser = user;
+    if (unsubscribeSnapshot) { try { unsubscribeSnapshot(); } catch(e){} unsubscribeSnapshot = null; }
+    if (_snapshotRetryTimer) { clearTimeout(_snapshotRetryTimer); _snapshotRetryTimer = null; }
+    try {
+        unsubscribeSnapshot = onSnapshot(
+            doc(db, "bulletjournal", user.uid),
+            (snap) => {
+                if (!snap.exists()) return;
+                const d = snap.data();
+                if (d._ts && d._ts >= lastLocalSave - 100 && d._ts <= lastLocalSave + 3000) return;
+                if (window.applyFirebaseData) window.applyFirebaseData(d);
+                setSyncStatus("synced");
+            },
+            (err) => {
+                console.error("Snapshot error:", err);
+                if (err.code === "permission-denied") {
+                    setSyncStatus("noperms");
+                } else if (!navigator.onLine) {
+                    setSyncStatus("offline");
+                } else {
+                    setSyncStatus("error");
+                    // Auto-reconnect after 10s
+                    _snapshotRetryTimer = setTimeout(() => {
+                        if (_currentUser) startSnapshot(_currentUser);
+                    }, 10000);
+                }
+            }
+        );
+    } catch(e) {
+        console.error("onSnapshot setup error:", e);
+        setSyncStatus("error");
+        _snapshotRetryTimer = setTimeout(() => { if (_currentUser) startSnapshot(_currentUser); }, 10000);
+    }
+}
+
+// Reconnect when network comes back
+window.addEventListener("online", () => {
+    if (_currentUser) {
+        setSyncStatus("loading");
+        startSnapshot(_currentUser);
+    }
+});
+
+// Manual retry by clicking sync chip
+document.addEventListener("DOMContentLoaded", () => {
+    const chip = document.getElementById("syncStatus");
+    if (chip) {
+        chip.style.cursor = "pointer";
+        chip.title = "Click to retry sync";
+        chip.addEventListener("click", () => {
+            if (_currentUser) { setSyncStatus("loading"); startSnapshot(_currentUser); }
+        });
+    }
 });
 </script>
 
@@ -7373,45 +7416,4 @@ onAuthStateChanged(auth, async (user) => {
       <div class="pixels-year-nav">
         <button class="btn-nav" onclick="pixelsPrevYear()">‹</button>
         <span class="pixels-year-label" id="pixelsYearLabel">2026</span>
-        <button class="btn-nav" onclick="pixelsNextYear()">›</button>
-      </div>
-    </div>
-    <div class="pixels-legend" id="pixelsLegend"></div>
-    <div id="pixelsGrid"></div>
-  </div>
-</div>
-
-
-<!-- ══ BODY METRICS ══ -->
-<div id="body" class="page">
-  <div class="body-container">
-    <div class="body-topbar">
-      <h2>💪 <span data-i18n="tab_body">Body Metrics</span></h2>
-    </div>
-    <div class="body-log-form">
-      <div class="body-form-grid">
-        <div class="body-field">
-          <label>Date</label>
-          <input type="date" id="bodyDate">
-        </div>
-        <div class="body-field">
-          <label>Weight (kg)</label>
-          <input type="number" id="bodyWeight" step="0.1" min="0" placeholder="e.g. 68.5">
-        </div>
-        <div class="body-field">
-          <label>Steps</label>
-          <input type="number" id="bodySteps" min="0" placeholder="e.g. 8500">
-        </div>
-        <div class="body-field">
-          <label>Energy (1–5)</label>
-          <select id="bodyEnergy">
-            <option value="5">★★★★★ Great</option>
-            <option value="4">★★★★☆ Good</option>
-            <option value="3" selected>★★★☆☆ Okay</option>
-            <option value="2">★★☆☆☆ Low</option>
-            <option value="1">★☆☆☆☆ Rough</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <input type="text" id="bodyNote" placeholder="Optional note…" style="flex:1;padding:8px 10px;border:1.5
+        <button class="btn-nav" onclick="pixelsNextYear(

@@ -1,6 +1,6 @@
 // Service Worker for Mai Bullet Journal
 // Cache version uses full date+hour so every new Netlify deploy busts the cache
-const CACHE = 'bj-202605282300'; // build 202605280300
+const CACHE = 'bj-202605290100'; // build 202605290100
 const ASSETS = [
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap',
