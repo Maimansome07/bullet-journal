@@ -6939,11 +6939,14 @@ function setSyncStatus(status) {
     const el = document.getElementById("syncStatus");
     if (!el) return;
     const map = {
-        loading: { icon: "🔄", text: "Connecting…", color: "var(--text-muted)" },
-        syncing: { icon: "🔄", text: "Saving…",     color: "var(--accent)"     },
-        synced:  { icon: "☁️", text: "Synced",      color: "var(--success)"    },
-        offline: { icon: "📴", text: "Offline",     color: "var(--text-muted)" },
-        error:   { icon: "⚠️", text: "Sync error",  color: "var(--secondary)"  },
+        loading:  { icon: "🔄", text: "Connecting…",    color: "var(--text-muted)" },
+        syncing:  { icon: "🔄", text: "Saving…",        color: "var(--accent)"     },
+        synced:   { icon: "☁️", text: "Synced",         color: "var(--success)"    },
+        offline:  { icon: "📴", text: "Offline",        color: "var(--text-muted)" },
+        noauth:   { icon: "☁️", text: "—",              color: "var(--text-muted)" },
+        noperms:  { icon: "🔒", text: "Rules expired",  color: "var(--secondary)"  },
+        toolarge: { icon: "⚠️", text: "Data too large", color: "var(--secondary)"  },
+        error:    { icon: "⚠️", text: "Sync error",     color: "var(--secondary)"  },
     };
     const s = map[status] || map.offline;
     el.textContent = s.icon + " " + s.text;
@@ -6953,15 +6956,40 @@ function setSyncStatus(status) {
 // Called by saveData() via debounce
 window.fbSave = async function(data) {
     if (!auth.currentUser) return;
+    // Guard: check payload size before sending (Firestore limit ~1MB)
+    let payload;
+    try {
+        payload = Object.assign({}, data, { _ts: Date.now() });
+        const size = new Blob([JSON.stringify(payload)]).size;
+        if (size > 900000) {
+            console.warn("Payload", size, "bytes — trimming old task history");
+            // Trim tasks older than 6 months to reduce size
+            const cutoff = new Date(); cutoff.setMonth(cutoff.getMonth() - 6);
+            const cutKey = cutoff.toISOString().slice(0,10);
+            const trimmed = {};
+            Object.keys(payload.tasks||{}).forEach(k => { if(k >= cutKey) trimmed[k] = payload.tasks[k]; });
+            payload.tasks = trimmed;
+            if (new Blob([JSON.stringify(payload)]).size > 900000) {
+                setSyncStatus("toolarge"); return;
+            }
+        }
+    } catch(e) { payload = Object.assign({}, data, { _ts: Date.now() }); }
     setSyncStatus("syncing");
     try {
-        lastLocalSave = Date.now();
-        await setDoc(doc(db, "bulletjournal", auth.currentUser.uid),
-            Object.assign({}, data, { _ts: lastLocalSave }));
+        lastLocalSave = payload._ts;
+        await setDoc(doc(db, "bulletjournal", auth.currentUser.uid), payload);
         setSyncStatus("synced");
     } catch(e) {
         console.error("Firebase save error:", e);
-        setSyncStatus("error");
+        if (e.code === "permission-denied" || e.code === "PERMISSION_DENIED") {
+            setSyncStatus("noperms");
+        } else if (!navigator.onLine) {
+            setSyncStatus("offline");
+        } else {
+            setSyncStatus("error");
+            // Auto-retry once after 8s
+            setTimeout(() => { if(auth.currentUser) window.fbSave(data); }, 8000);
+        }
     }
 };
 
@@ -7034,6 +7062,7 @@ onAuthStateChanged(auth, async (user) => {
     if (!user) {
         document.getElementById("userInfo").style.display = "none";
         document.getElementById("signInBtn").style.display = "";
+        setSyncStatus("noauth");
         return;
     }
     // Show user info, hide sign-in button
@@ -7057,7 +7086,13 @@ onAuthStateChanged(auth, async (user) => {
         setSyncStatus("synced");
     } catch(e) {
         console.error("Initial Firebase load:", e);
-        setSyncStatus("error");
+        if (e.code === "permission-denied" || e.code === "PERMISSION_DENIED") {
+            setSyncStatus("noperms");
+        } else if (!navigator.onLine) {
+            setSyncStatus("offline");
+        } else {
+            setSyncStatus("error");
+        }
     }
 
     // Real-time listener for multi-device sync
@@ -7071,7 +7106,12 @@ onAuthStateChanged(auth, async (user) => {
             if (window.applyFirebaseData) window.applyFirebaseData(d);
             setSyncStatus("synced");
         },
-        (err) => { console.error("Snapshot:", err); setSyncStatus("error"); }
+        (err) => {
+            console.error("Snapshot error:", err);
+            if (err.code === "permission-denied") setSyncStatus("noperms");
+            else if (!navigator.onLine) setSyncStatus("offline");
+            else setSyncStatus("error");
+        }
     );
 });
 </script>
@@ -7374,46 +7414,4 @@ onAuthStateChanged(auth, async (user) => {
         </div>
       </div>
       <div style="display:flex;gap:10px;align-items:center;">
-        <input type="text" id="bodyNote" placeholder="Optional note…" style="flex:1;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:0.88rem;background:var(--bg-white);color:var(--text-dark);">
-        <button class="body-save-btn" onclick="saveBodyEntry()">Log Entry</button>
-      </div>
-    </div>
-    <div class="body-chart-wrap">
-      <div class="body-chart-title">Weight Trend</div>
-      <canvas id="bodyCanvas" style="width:100%;display:block;"></canvas>
-    </div>
-    <div class="body-entries">
-      <div class="body-entries-header">
-        <span>Date</span><span>Weight</span><span>Steps</span><span>Energy</span><span>Note</span><span></span>
-      </div>
-      <div id="bodyEntriesWrap"></div>
-    </div>
-  </div>
-</div>
-
-
-<!-- ══ MONTHLY REVIEW ══ -->
-<div id="monthreview" class="page">
-  <div class="review-container">
-    <div class="review-topbar">
-      <h2>🗓️ <span data-i18n="tab_monthreview">Monthly Review</span></h2>
-      <div class="review-month-nav">
-        <button class="btn-nav" onclick="reviewPrevMonth()">‹</button>
-        <span class="review-month-label" id="reviewMonthLabel"></span>
-        <button class="btn-nav" onclick="reviewNextMonth()">›</button>
-      </div>
-    </div>
-    <div class="review-stats-row" id="reviewStatsRow"></div>
-    <div class="review-questions">
-      <div class="review-question">
-        <div class="review-q-label">🏆 Biggest Win</div>
-        <textarea class="review-textarea" id="reviewWin" placeholder="What went really well this month?"></textarea>
-      </div>
-      <div class="review-question">
-        <div class="review-q-label">⚡ Biggest Challenge</div>
-        <textarea class="review-textarea" id="reviewChallenge" placeholder="What was the hardest part?"></textarea>
-      </div>
-      <div class="review-question">
-        <div class="review-q-label">💡 Key Lesson</div>
-        <textarea class="review-textarea" id="reviewLesson" placeholder="What did you learn about yourself?"></textarea>
-      
+        <input type="text" id="bodyNote" placeholder="Optional note…" style="flex:1;padding:8px 10px;border:1.5
