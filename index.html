@@ -420,8 +420,8 @@ textarea { resize: vertical; min-height: 80px; }
 .subtask-del { background:none; border:none; color:#ccc; cursor:pointer; font-size:0.85rem; padding:0 2px; box-shadow:none; transform:none; }
 .subtask-del:hover { color:var(--secondary); }
 .subtask-bar { font-size:0.65rem; color:var(--text-muted); margin-top:1px; }
-.task-due { font-size:0.72rem; color:var(--text-muted); margin-left:6px; }
-.task-due.overdue { color:var(--secondary); font-weight:700; }
+.task-due { display:none; } /* hidden in calendar cells — keeps rows compact */
+.task-due.overdue { display:none; }
 .rec-days-grid { display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
 .rec-day-chip { display:flex; align-items:center; gap:4px; padding:5px 10px; border-radius:20px; border:1.5px solid var(--border); background:var(--bg-white); font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.15s; user-select:none; }
 .rec-day-chip input { display:none; }
@@ -7408,4 +7408,5 @@ onAuthStateChanged(auth, async (user) => {
         <button class="pom-btn" id="pomBreakBtn" onclick="pomSetBreak(5)">☕ 5 min</button>
         <button class="pom-btn" id="pomLongBtn" onclick="pomSetBreak(15)">🛋 15 min</button>
       </div>
-      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></
+      <div class="pom-bar-wrap"><div class="pom-bar" id="pomBar" style="width:100%"></div></div>
+    </div
